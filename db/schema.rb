@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140110183145) do
+ActiveRecord::Schema.define(version: 20140110190001) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -24,6 +24,16 @@ ActiveRecord::Schema.define(version: 20140110183145) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "progresses", force: true do |t|
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "progresses", ["task_id"], name: "index_progresses_on_task_id"
+  add_index "progresses", ["user_id"], name: "index_progresses_on_user_id"
 
   create_table "tasks", force: true do |t|
     t.string   "name"

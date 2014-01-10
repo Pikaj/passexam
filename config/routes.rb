@@ -1,11 +1,22 @@
 Dyskretna::Application.routes.draw do
-  resources :tasks
-
-  resources :lists
-
-  resources :categories
 
   devise_for :users
+
+  resources :categories
+  
+  resources :lists do
+    resources :tasks
+  end
+
+  namespace :user do
+    resources :lists do
+      resources :tasks
+    end
+    resources :categories
+    get '/' => "user#index"
+  end
+
+  root 'lists#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

@@ -1,4 +1,4 @@
-class TasksController < ApplicationController
+class User::TasksController < UserController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   # GET /tasks

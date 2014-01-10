@@ -1,4 +1,4 @@
-class CategoriesController < ApplicationController
+class User::CategoriesController < UserController
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
   # GET /categories
