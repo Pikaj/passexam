@@ -16,8 +16,8 @@
   	<font color="red"> Trudne </font>
   <% end %> 
 </p>
-
-  <img src=<%= @task.url %> alt=<%= @task.name %>>
+<br><br>
+  <img src=<%= @task.url %> alt=<%= @task.name %>><br>
   <br>
   <% if current_user.task_done?(@task)  %>
     <strong> <span class="icon ok"/> <font color="green"> Zadanie zrobione &nbsp;&nbsp;&nbsp;</font> </strong>
