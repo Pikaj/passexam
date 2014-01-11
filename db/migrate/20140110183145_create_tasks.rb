@@ -5,6 +5,7 @@ class CreateTasks < ActiveRecord::Migration
       t.string :url
       t.boolean :status
       t.integer :level
+      t.references :list, index: true
 
       t.timestamps
     end

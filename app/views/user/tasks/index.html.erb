@@ -3,10 +3,12 @@
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Kategoria</th>
+      <th>Lista</th>
+      <th>Zadanie</th>
       <th>Url</th>
       <th>Status</th>
-      <th>Level</th>
+      <th>Poziom trudności</th>
       <th></th>
       <th></th>
       <th></th>
@@ -16,6 +18,8 @@
   <tbody>
     <% @tasks.each do |task| %>
       <tr>
+        <td><%= task.list.category.name %></td>
+        <td><%= task.list.name %></td>
         <td><%= task.name %></td>
         <td><%= task.url %></td>
         <td><%= task.status %></td>
@@ -31,3 +35,4 @@
 <br>
 
 <%= link_to 'New Task', new_task_path %>
+

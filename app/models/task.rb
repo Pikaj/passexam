@@ -1,3 +1,5 @@
 class Task < ActiveRecord::Base
-	belongs_to :task
+	belongs_to :list
+	has_many :progresses
+	has_many :noprogresses
 end

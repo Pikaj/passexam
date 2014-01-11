@@ -1,9 +1,11 @@
+
 <h1>Listing lists</h1>
 
 <table>
   <thead>
     <tr>
-      <th>Name</th>
+      <th>Kategoria</th>
+      <th>Nazwa Listy</th>
       <th></th>
       <th></th>
       <th></th>
@@ -13,6 +15,7 @@
   <tbody>
     <% @lists.each do |list| %>
       <tr>
+        <td><%= list.category.name %></td>
         <td><%= list.name %></td>
         <td><%= link_to 'Show', list %></td>
         <td><%= link_to 'Edit', edit_list_path(list) %></td>
@@ -24,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New List', new_list_path %>
+<%= link_to 'Nowa lista', new_list_path %>

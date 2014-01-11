@@ -2,21 +2,32 @@ Dyskretna::Application.routes.draw do
 
   devise_for :users
 
-  resources :categories
-  
-  resources :lists do
-    resources :tasks
-  end
-
-  namespace :user do
+  resources :categories do
     resources :lists do
       resources :tasks
     end
-    resources :categories
+  end
+
+  namespace :user do
+    resources :no_progresses
+    resources :categories do
+      resources :lists do
+        resources :tasks do
+          member do
+            get 'im_done'
+            get 'im_done_cancel'
+            get 'too_hard'
+            get 'too_hard_cancel'
+          end
+        end
+      end
+    end
     get '/' => "user#index"
   end
 
-  root 'lists#index'
+  root 'welcome#index'
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

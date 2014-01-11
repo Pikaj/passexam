@@ -1,24 +1,34 @@
-<p id="notice"><%= notice %></p>
-
-<p>
-  <strong>Name:</strong>
-  <%= @task.name %>
-</p>
-
-<p>
-  <strong>Url:</strong>
-  <%= @task.url %>
+<center>
+<h3>Zadanie: <%= @task.name %>&nbsp;&nbsp; <%= @task.list.category.name %>: <%= @task.list.name %></h3>
 </p>
 
 <p>
   <strong>Status:</strong>
-  <%= @task.status %>
+  <% if @task.status %> 
+  	<font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font> 
+  <% else %>
+  	<font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
+  <% end %>
+  <strong>Poziom trudności:</strong>
+  <% if @task.level < 2 %>
+  	<font color="green"> Łatwe </font> 
+  <% else %>
+  	<font color="red"> Trudne </font>
+  <% end %> 
 </p>
 
-<p>
-  <strong>Level:</strong>
-  <%= @task.level %>
-</p>
-
-<%= link_to 'Edit', edit_task_path(@task) %> |
-<%= link_to 'Back', tasks_path %>
+  <img src=<%= @task.url %> alt=<%= @task.name %>>
+  <br>
+  <% if current_user.task_done?(@task)  %>
+    <strong> <span class="icon ok"/> <font color="green"> Zadanie zrobione &nbsp;&nbsp;&nbsp;</font> </strong>
+    <a href=<%= im_done_cancel_user_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
+  <% else %>
+    <% if current_user.task_too_hard?(@task) %>
+      <strong> <span class="icon warning-sign"/> <font color="red"> Zadanie za trudne &nbsp;&nbsp;&nbsp;</font> </strong>
+      <a href=<%= too_hard_cancel_user_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
+    <% else %>
+      <a href=<%= im_done_user_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button success normal"><span class="icon ok"></span>Zrobione</a>
+      <a href=<%= too_hard_user_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button info normal"><span class="icon warning-sign"></span>Za trudne</a> 
+    <% end %>
+  <% end %>
+</center>

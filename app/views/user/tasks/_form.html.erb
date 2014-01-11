@@ -1,33 +1,22 @@
-<%= form_for(@task) do |f| %>
-  <% if @task.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-
-      <ul>
-      <% @task.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="field">
-    <%= f.label :url %><br>
-    <%= f.text_field :url %>
-  </div>
-  <div class="field">
-    <%= f.label :status %><br>
-    <%= f.text_field :status %>
-  </div>
-  <div class="field">
-    <%= f.label :level %><br>
-    <%= f.number_field :level %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+<%= form_for [:user, @list.category, @list, @task] do |f| %>
+    
+    <table>
+      <tbody>
+        <tr>
+          <td><center><strong> Nazwa: </strong></center></td>
+          <td><%= f.text_field :name %></td>
+        <tr>
+        </tr>
+          <td><center><strong> Treść: </strong></center></td>
+          <td><%= f.text_field :url %></td>
+        <tr>  
+          <td><center><strong> Status: </strong></center></td>
+          <td><%= f.check_box :status %>Zaznacz jeśli zrobione</td>
+        </tr>  
+          <td><center><strong> Poziom trudnosci: </strong></center></td>
+          <td><%= f.text_field :level %></td>
+        </tr>
+        <td></td><td><center><%= f.submit "Zatwierdź"%></center></td>
+      </tbody>
+    </table>
 <% end %>

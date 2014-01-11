@@ -11,6 +11,12 @@ group :development do
 	gem 'sqlite3'
 end
 
+group :production do
+  gem 'shelly-dependencies'
+end
+
+gem 'dotiw'
+
 gem 'devise'
 
 # Use SCSS for stylesheets
