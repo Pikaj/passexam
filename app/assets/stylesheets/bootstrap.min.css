@@ -11,10 +11,20 @@
   /*  bottom: 100%;
  top: auto !important; */
 }
+.nano { background: #bba; width: 500px; height: 500px; }
+.nano .content { padding: 10px; }
+.nano .pane   { background: #888; }
+.nano .slider { background: #111; }
 .posfix {
     /*position:fixed !important;*/
     overflow-y:auto;
     height:300px;
+}
+
+.posfix2 {
+    /*position:fixed !important;*/
+    overflow-y:auto;
+    height:600px;
 }
 
 /* position the arrow downwards, pointing to the menu */
