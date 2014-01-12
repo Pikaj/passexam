@@ -8,8 +8,13 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
  .dropup-menu {
-    bottom: 100%;
-    top: auto !important;
+  /*  bottom: 100%;
+ top: auto !important; */
+}
+.posfix {
+    /*position:fixed !important;*/
+    overflow-y:auto;
+    height:300px;
 }
 
 /* position the arrow downwards, pointing to the menu */

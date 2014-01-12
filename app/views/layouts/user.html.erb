@@ -28,7 +28,7 @@
                   <li class="dropdown-submenu">
                     <a tabindex="-1" href="#"><%= list.name %></a>
                       <%if list.tasks.size > 0 %>
-                        <ul class="dropdown-menu dropup-menu">
+                        <ul class="dropdown-menu dropup-menu posfix">
                           <% list.tasks.each do |task| %>
                             <% if  current_user.task_done?(task) %> 
                             <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
