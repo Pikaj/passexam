@@ -28,7 +28,7 @@
                   <li class="dropdown-submenu">
                     <a tabindex="-1" href="#"><%= list.name %></a>
                       <%if list.tasks.size > 0 %>
-                        <ul class="dropdown-menu">
+                        <ul class="dropdown-menu dropup-menu" >
                           <% list.tasks.each do |task| %>
                             <% if  task.level > 1 %>
                             <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->

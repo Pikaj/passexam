@@ -24,7 +24,7 @@
             <% else %>
               <font color="red"> Nie zrobione </font>
             <% end %></center></td>
-        <td><center><% if task.level < 2 %>
+        <td><center><% if task.level == nil || task.level < 2 %>
               <font color="green"> Łatwe </font> 
             <% else %>
               <font color="red"> Trudne </font>
