@@ -5,6 +5,7 @@
       <th>Kategoria</th>
       <th>Lista</th>
       <th>Zadanie</th>
+      <th>Zgłoszone przez</th>
     </tr>
   </thead>
 
@@ -13,7 +14,8 @@
       <tr>
         <td><center><%= noprogress.task.list.category.name %></center></td>
         <td><center><%= noprogress.task.list.name %></center></td>
-        <td><center><%= noprogress.task.name %></center></td>
+        <td><center><strong><%= link_to noprogress.task.name, category_list_task_path(noprogress.task.list.category, noprogress.task.list, noprogress.task) %></strong></center></td>
+        <td><center><%= noprogress.user.email.split("@").first.upcase %></center></center>
       </tr>
     <% end %>
   </tbody>
