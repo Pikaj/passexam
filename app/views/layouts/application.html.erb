@@ -30,7 +30,7 @@
                       <%if list.tasks.size > 0 %>
                         <ul class="dropdown-menu dropup-menu posfix">
                           <% list.tasks.each do |task| %>
-                            <% if  task.level > 1 %>
+                            <% if  task.level != nil && task.level > 1 %>
                             <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
                               <li style="background-color: #F9C8C8">
                               <%= link_to task.name, category_list_task_path(category, list, task) %></li>
