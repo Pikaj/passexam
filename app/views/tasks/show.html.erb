@@ -1,22 +1,20 @@
 <center>
-<h3>Zadanie: <%= @task.name %>&nbsp;&nbsp; <%= @categories[@lists[@task.list_id].category_id].name %>: <%= @lists[@task.list_id].name %></h3>
+<h3>Zadanie: <%= @task.name %>&nbsp;&nbsp; <%= @task.list.category.name %>: <%= @task.list.name %></h3>
 </p>
 
 <p>
   <strong>Status:</strong>
   <% if @task.status %> 
-  	<font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font> 
+    <font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font> 
   <% else %>
-  	<font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
+    <font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
   <% end %>
   <strong>Poziom trudności:</strong>
   <% if @task.level < 2 %>
-  	<font color="green"> Łatwe </font> 
+    <font color="green"> Łatwe </font> 
   <% else %>
-  	<font color="red"> Trudne </font>
+    <font color="red"> Trudne </font>
   <% end %> 
 </p>
-<br><br>
-<img src=<%= @task.url %> alt=<%= @task.name %>>
 
 </center>
