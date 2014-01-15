@@ -24,12 +24,12 @@
               <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
               <%if category.lists.size > 0 %>
                 <ul class="dropdown-menu content">
-                <% category.lists.each do |list| %>
+                <% category.lists.sort_by{|obj| obj.name}.each do |list| %>
                   <li class="dropdown-submenu">
                     <a tabindex="-1" href="#"><%= list.name %></a>
                       <%if list.tasks.size > 0 %>
                         <ul class="dropdown-menu dropup-menu posfix">
-                          <% list.tasks.each do |task| %>
+                          <% list.tasks.sort_by{|obj| obj.name}.each do |task| %>
                             <% if  current_user.task_done?(task) %> 
                             <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
                               <li style="background-color: #A5D28C">
