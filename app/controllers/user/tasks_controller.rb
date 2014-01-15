@@ -11,6 +11,7 @@ class User::TasksController < UserController
   # GET /tasks/1.json
   def show
     @task = Task.find(params[:id])
+    render :show, :layout => 'sidebar'
   end
 
   # GET /tasks/new
