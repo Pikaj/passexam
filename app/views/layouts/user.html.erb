@@ -39,7 +39,7 @@
                               <li style="background-color: #F0E76B">
                               <%= link_to task.name, category_list_task_path(category, list, task) %></li>
                             <% elsif current_user.task_too_hard?(task) %>
-                            <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE -->
+                            <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
                               <li style="background-color: #85A7FA">
                               <%= link_to task.name, category_list_task_path(category, list, task) %></li>
                             <% elsif  task.level != nil && task.level > 1 %>
