@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dyskretna</title>
+  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <div class="nav-collapse" style="margin-top: 10px">
+        <ul class="nav">
+          <li class="active"><%= link_to "Home", root_url %></li>
+          <% @categories.each do |category| %>
+            <li class="dropdown" id="accountmenu">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
+              <%if category.lists.size > 0 %>
+                <ul class="dropdown-menu content">
+                  <% category.lists.sort_by{|obj| obj.id}.each do |list| %>
+                    <li class="dropdown-submenu">
+                      <a tabindex="-1" href="#"><%= list.name %></a>
+                      <%if list.tasks.size > 0 %>
+                        <ul class="dropdown-menu dropup-menu posfix">
+                          <% list.tasks.sort_by{|obj| obj.id}.each do |task| %>
+                            <% if  current_user.task_done?(task) %>
+                              <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
+                              <li style="background-color: #A5D28C">
+                                <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                            <% elsif task.status %>
+                              <!-- ZADANIE ZROBIONE PRZEZ KOGOS INNEGO NA ŻÓŁTO -->
+                              <li style="background-color: #F0E76B">
+                                <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                            <% elsif current_user.task_too_hard?(task) %>
+                              <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE -->
+                              <li style="background-color: #85A7FA">
+                                <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                            <% elsif  task.level != nil && task.level > 1 %>
+                              <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+                              <li style="background-color: #F9C8C8">
+                                <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                            <% else %>
+                              <!-- ZADANIE PROSTE NIE ZROBIONE -->
+                              <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                            <% end %>
+                          <% end %>
+                        </ul>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+        <ul class="nav pull-right">
+          <form class="navbar-form pull-right">
+            <% if user_signed_in? %>
+              <strong><%= current_user.email.split("@").first.upcase %></strong>
+              jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
+              <%= link_to "Admin panel", user_path, :class => 'button tiny' %>
+              <%= link_to 'Edit profile', edit_user_registration_path, :class => 'button tiny' %>
+              <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Logout </a>
+            <% else %>
+              <a href="<%= new_user_session_path %>" class="button secondary"  ><span class='icon user'></span> Login</a>
+              <a href="<%= new_user_registration_path %>" class="button" ><span class="icon pencil"></span>Sign up</a>
+            <% end %>
+          </form>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
+</div>
+<div class="container" style="margin-top: 70px">
+  <div class="row" style="margin-left: -30px">
+    <div class="span2">
+      <%= yield(:sidebar) %>
+    </div>
+    <div class="span10">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <%= yield %>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <footer>
+    <center><h3>Do egzaminu pozostało: <%= distance_of_time_in_words(Time.now, DateTime.civil_from_format(:local, 2014, 2, 11, 10), :locale => 'pl') %></h3></center>
+  </footer>
+</div>
+</div>
+
+</body>
+
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<!-- <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+  <script src="/assets/bootstrap.min.js"></script> -->
+</html>
