@@ -22,18 +22,3 @@
 <br>
 
 </center>
-
-<% content_for :sidebar do %>
-  <ul class="nav nav-tabs nav-stacked">
-    <% for task in @task.list.tasks.sort_by{|obj| obj.id} %>
-      <% if  task.level > 1 %>
-        <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-        <li>
-          <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %></li>
-      <% else %>
-        <!-- ZADANIE PROSTE NIE ZROBIONE -->
-        <li><%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %></li>
-      <% end %>
-    <% end %>
-  </ul>
-<% end %>
