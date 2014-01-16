@@ -47,7 +47,7 @@
       <% elsif current_user.task_too_hard?(task) %>
         <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
         <li>
-          <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %></li>
+          <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #85A7FA' %></li>
       <% elsif  task.level > 1 %>
         <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
         <li>
