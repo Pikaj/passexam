@@ -7,7 +7,6 @@
       <tr>
         <td style="background-color:yellow;"><%= list.name %></td>
         <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-          <td><%= task.name %></td>
           <% if  task.status %>
         <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
         <td>
