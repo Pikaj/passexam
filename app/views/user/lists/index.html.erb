@@ -1,11 +1,11 @@
-<h2>Statystyki</h2>
+<h2>Postęp</h2>
 
 <table>
 
   <tbody>
     <% @category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
       <tr>
-        <td style="background-color: #F0E76B; border-style:solid;border-width:1px;">
+        <td style="background-color: yellow; border-style:solid;border-width:1px;">
           <center><strong>
             <%= list.name %>
           </strong></center>
