@@ -3,10 +3,10 @@
 <table>
 
   <tbody>
-    <% @category.lists.each do |list| %>
+    <% @category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
       <tr>
         <td style="background-color:yellow;"><%= list.name %></td>
-        <% list.tasks.each do |task| %>
+        <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
           <td><%= task.name %></td>
         <% end %>
       </tr>
