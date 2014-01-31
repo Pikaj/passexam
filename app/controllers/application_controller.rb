@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_lists
   before_filter :redirect_signed_user
   before_filter :set_noprogresses
+  before_filter :set_rating
   layout :determine_layout
 
 
@@ -26,6 +27,11 @@ class ApplicationController < ActionController::Base
     if user_signed_in? and (!request.fullpath.include? '/user' and request.fullpath != '/')
       redirect_to "/user"+request.fullpath
     end
+  end
+
+  def set_rating
+    users = User.all
+    @rating = users.sort_by{|obj| obj.no_progresses.size }.reverse
   end
 
   private

@@ -65,7 +65,7 @@
             <% if user_signed_in? %>
                     <strong><%= current_user.email.split("@").first.upcase %></strong> 
                     jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
-                    <a href="#" class="button tiny secondary"> <span class="icon trophy"></span>Statystyki</a>
+                    <a href=<%= user_category_lists_path({:category_id => 1}) %> class="button tiny secondary"> <span class="icon trophy"></span>Statystyki</a>
                     <%= link_to "Admin panel", user_path, :class => 'button tiny' %> 
                     <%= link_to 'Edit profile', edit_user_registration_path, :class => 'button tiny' %> 
                     <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Logout </a>

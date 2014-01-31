@@ -27,4 +27,10 @@ class User < ActiveRecord::Base
     return counter.round(2)
   end
 
+  def rating
+    users = User.all
+    rating = users.sort_by{|obj| obj.no_progresses.size }
+    return rating.reverse
+  end
+
 end
