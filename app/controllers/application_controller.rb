@@ -8,7 +8,6 @@ class ApplicationController < ActionController::Base
   before_filter :redirect_signed_user
   before_filter :set_noprogresses
   before_filter :set_rating
-  before_filter :set_tasks_size
   layout :determine_layout
 
 
@@ -18,10 +17,7 @@ class ApplicationController < ActionController::Base
 
   def set_lists
     @lists = List.all
-  end
-
-  def set_tasks_size
-    @tasks_size = Task.all.size
+    @tasks_size = @lists.map{ |l| l.tasks.size }.sum
   end
 
   def set_noprogresses

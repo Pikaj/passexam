@@ -19,18 +19,14 @@ class User < ActiveRecord::Base
   end
 
   def task_counter
-    if (!Task.all.empty?)
-      counter = (self.progresses.size.to_f/Task.all.size.to_f)*100.0
+    lists = List.all
+    tasks_size = lists.map{ |l| l.tasks.size }.sum
+    if (tasks_size > 0)
+      counter = (self.progresses.size.to_f/tasks_size.to_f)*100.0
     else 
       counter = 0
     end
     return counter.round(2)
-  end
-
-  def rating
-    users = User.all
-    rating = users.sort_by{|obj| obj.no_progresses.size }
-    return rating.reverse
   end
 
 end
