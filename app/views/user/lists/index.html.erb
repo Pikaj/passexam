@@ -5,24 +5,22 @@
   <tbody>
     <% @category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
       <tr>
-        <td style="background-color:yellow;"><%= list.name %></td>
+        <td style="background-color:yellow; border-style:solid;border-width:1px;"><%= list.name %></td>
         <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
           <% if  task.status %>
             <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
-            <td style='background-color: #A5D28C'>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %>
-            </td>
+            <td style='background-color: #A5D28C; border-style:solid;border-width:1px;'>
           <% elsif  task.level != nil && task.level > 1 %>
             <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-            <td style='background-color: #F9C8C8'>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %>
-            </td>
+            <td style='background-color: #F9C8C8; border-style:solid;border-width:1px;'>
           <% else %>
             <!-- ZADANIE PROSTE NIE ZROBIONE -->
-            <td style='background-color: #FFFFFF'>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %>
-            </td>
+            <td style='background-color: #FFFFFF; border-style:solid;border-width:1px;'>
           <% end %>
+              <center>
+              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %>
+              </center>
+            </td>
         <% end %>
       </tr>
     <% end %>
