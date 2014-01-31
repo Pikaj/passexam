@@ -25,7 +25,7 @@
 
 <% content_for :sidebar do %>
   <ul class="nav nav-tabs nav-stacked">
-    <% for task in @task.list.tasks.sort_by{|obj| obj.id} %>
+    <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
       <% if  task.level > 1 %>
         <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
         <li>

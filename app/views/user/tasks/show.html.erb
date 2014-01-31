@@ -35,7 +35,7 @@
 
 <% content_for :sidebar do %>
   <ul class="nav nav-tabs nav-stacked">
-    <% for task in @task.list.tasks.sort_by{|obj| obj.id} %>
+    <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
       <% if  current_user.task_done?(task) %>
         <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
         <li>
