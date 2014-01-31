@@ -1,8 +1,28 @@
-<!-- <h2>Ranking</h2>
-  <% @rating.each do %>
-  <% end %> -->
+  <center><strong><h3>Ranking</h3></strong></center>
 
-<h2>Postęp</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Miejsce</th>
+      <th>Nazwa</th>
+      <th>Przygotowanie</th>
+      <th>Zrobione zadania</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @rating.each_with_index do |user, index| %>
+      <tr>
+       <td><center><%= index+1 %></center></td>
+       <td><center><%= user.email.split("@").first.upcase %></center></td>
+       <td><center><%= user.task_counter %> %</center></td>
+       <td><center><%= user.progresses.size %> / <%= @tasks_size %></center></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<center><strong><h3>Postęp</h3></strong></center>
 
 <table>
 
