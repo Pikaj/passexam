@@ -5,10 +5,10 @@
   <tbody>
     <% @category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
       <tr>
-        <td style="background-color:yellow; border-style:solid;border-width:1px;">
-          <center>
-          <%= list.name %>
-          </center>
+        <td style="background-color: #F0E76B; border-style:solid;border-width:1px;">
+          <center><strong>
+            <%= list.name %>
+          </strong></center>
         </td>
         <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
           <% if  task.status %>
