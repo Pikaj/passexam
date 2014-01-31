@@ -1,8 +1,12 @@
 class User::ProgressesController < UserController
 
+  def index
+  end
+
   def new
     @progress = Progress.new
   end
+
   def create
     @progress = Progress.new(list_params)
   end

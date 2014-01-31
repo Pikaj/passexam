@@ -10,6 +10,7 @@ Dyskretna::Application.routes.draw do
 
   namespace :user do
     resources :no_progresses
+    resources :progresses
     resources :categories do
       resources :lists do
         resources :tasks do
