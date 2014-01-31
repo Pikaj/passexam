@@ -5,6 +5,7 @@ class User::ListsController < UserController
 
   def index
     @lists = List.all
+    @category = Category.find(params[:category_id])
     @list = List.new
   end
 
