@@ -8,6 +8,19 @@
         <td style="background-color:yellow;"><%= list.name %></td>
         <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
           <td><%= task.name %></td>
+          <% if  task.status %>
+        <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
+        <td>
+          <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></td>\
+      <% elsif  task.level != nil && task.level > 1 %>
+        <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+        <td>
+          <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %>
+          </td>
+      <% else %>
+        <!-- ZADANIE PROSTE NIE ZROBIONE -->
+        <td><%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #FFFFFF' %></td>
+      <% end %>
         <% end %>
       </tr>
     <% end %>
