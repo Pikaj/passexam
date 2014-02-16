@@ -29,7 +29,7 @@
             <% else %>
               <font color="red"> Trudne </font>
             <% end %></center></td>
-        <td><%= link_to 'Pokaż', user_category_list_task_path(@list.category, @list, task) %></td>
+        <td><%= link_to 'Pokaż', category_list_task_path(@list.category, @list, task) %></td>
         <td><%= link_to 'Edytuj', edit_user_category_list_task_path(@list.category, @list, task) %></td>
         <td><%= link_to 'Usuń', [:user, @list.category,@list, task], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
       </tr>

@@ -29,16 +29,41 @@
                     <a tabindex="-1" href="#"><%= list.name %></a>
                       <%if list.tasks.size > 0 %>
                         <ul class="dropdown-menu dropup-menu posfix">
-                          <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-                            <% if  task.level != nil && task.level > 1 %>
-                            <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-                              <li style="background-color: #F9C8C8">
-                              <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                            <% else %>
-                            <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                              <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                            <% end %>
-                          <% end %>
+                         <% if user_signed_in? %>
+                                <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
+                                      <% if  current_user.task_done?(task) %> 
+                                      <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
+                                        <li style="background-color: #A5D28C">
+                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% elsif task.status %>
+                                      <!-- ZADANIE ZROBIONE PRZEZ KOGOS INNEGO NA ŻÓŁTO -->
+                                        <li style="background-color: #F0E76B">
+                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% elsif current_user.task_too_hard?(task) %>
+                                      <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
+                                        <li style="background-color: #85A7FA">
+                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% elsif  task.level != nil && task.level > 1 %>
+                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+                                        <li style="background-color: #F9C8C8">
+                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% else %>
+                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
+                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% end %>
+                                  <% end %>
+                          <% else %>
+                                  <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
+                                      <% if  task.level != nil && task.level > 1 %>
+                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+                                        <li style="background-color: #F9C8C8">
+                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% else %>
+                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
+                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                      <% end %>
+                                <% end %>
+                         <% end %>
                         </ul>
                       <% end %>
                   </li>
@@ -53,6 +78,7 @@
             <% if user_signed_in? %>
                     <strong><%= current_user.email.split("@").first.upcase %></strong> 
                     jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
+                    <a href=<%= user_progresses_path %> class="button tiny secondary"> <span class="icon trophy"></span>Statystyki</a>
                     <%= link_to "Admin panel", user_path, :class => 'button tiny' %> 
                     <%= link_to 'Edit profile', edit_user_registration_path, :class => 'button tiny' %> 
                     <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Logout </a>

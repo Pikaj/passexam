@@ -22,7 +22,7 @@
   </tbody>
 </table>
 
-<center><strong><h3>Ogólny postęp</h3></strong></center>
+<center><strong><h3>Postęp w nauce</h3></strong></center>
 
 <table>
   <tbody>
@@ -53,7 +53,7 @@
               </strong></center>
             </td>
             <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-              <% if  task.status %>
+              <% if  current_user.task_done?(task) %>
                 <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
                 <td style='background-color: #A5D28C; border-style:solid;border-width:1px;'>
               <% elsif  task.too_hard? %>

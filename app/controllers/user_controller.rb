@@ -1,6 +1,5 @@
 class UserController < ApplicationController
   before_filter :check_user
-  layout  'user'
   private
   def check_user
     if !user_signed_in?

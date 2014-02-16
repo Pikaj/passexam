@@ -5,10 +5,10 @@ class ApplicationController < ActionController::Base
 
   before_filter :set_categories
   before_filter :set_lists
-  before_filter :redirect_signed_user
+  # before_filter :redirect_signed_user
   before_filter :set_noprogresses
   before_filter :set_rating
-  layout :determine_layout
+  # layout :determine_layout
 
 
   def set_categories
@@ -24,11 +24,11 @@ class ApplicationController < ActionController::Base
     @lnoprogresses = NoProgress.all
   end
 
-  def redirect_signed_user
-    if user_signed_in? and (!request.fullpath.include? '/user' and request.fullpath != '/')
-      redirect_to "/user"+request.fullpath
-    end
-  end
+  # def redirect_signed_user
+  #   if user_signed_in? and (!request.fullpath.include? '/user' and request.fullpath != '/')
+  #     redirect_to "/user"+request.fullpath
+  #   end
+  # end
 
   def set_rating
     users = User.all
@@ -36,9 +36,9 @@ class ApplicationController < ActionController::Base
   end
 
   private
-  def determine_layout
-    current_user ? "user" : "application"
-  end
+  # def determine_layout
+  #   current_user ? "user" : "application"
+  # end
 
 
 end

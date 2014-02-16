@@ -14,7 +14,7 @@
     <% @categories.each do |category| %>
       <tr>
         <td><center><%= category.name %></center></td>
-        <td><%= link_to 'Pokaż', category %></td>
+        <td><%= link_to 'Pokaż', user_category_path(category) %></td>
         <td><%= link_to 'Edytuj', edit_user_category_path(category) %></td>
         <td><%= link_to 'Usuń', [:user,category], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
       </tr>
