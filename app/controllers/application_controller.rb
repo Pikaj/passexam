@@ -10,6 +10,7 @@ class ApplicationController < ActionController::Base
   before_filter :set_rating
   # layout :determine_layout
 
+  before_filter :instantiate_controller_and_action_names
 
   def set_categories
     @categories = Category.all
@@ -40,5 +41,9 @@ class ApplicationController < ActionController::Base
   #   current_user ? "user" : "application"
   # end
 
+  def instantiate_controller_and_action_names
+    @current_action = action_name
+    @current_controller = controller_name
+  end
 
 end

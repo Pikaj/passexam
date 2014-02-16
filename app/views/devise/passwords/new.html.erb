@@ -1,0 +1,18 @@
+<center>
+<h3>Zapomniałeś hasła?</h3>
+
+<%= form_for(resource, :as => resource_name, :url => password_path(resource_name), :html => { :method => :post }) do |f| %>
+  <%= devise_error_messages! %>
+  <table style="width: 600px">
+    <tbody>
+        <tr>
+         <td><center>E-mail</center></td>
+         <td><center><%= f.email_field :email, :autofocus => true %></center></td>
+         </tr>
+    </tbody>
+  </table>
+
+  <div><%= f.submit "Wyślij instrukcje do zresetowania hasła", :class => 'button'%></div>
+<% end %>
+</center>
+

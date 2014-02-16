@@ -1,0 +1,28 @@
+<center>
+<h2>Rejestracja</h2>
+
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name)) do |f| %>
+
+  <table style="width: 600px">
+  <tbody>
+      <tr>
+       <td><center>E-mail</center></td>
+       <td><center> <%= f.email_field :email, :autofocus => true %></center></td>
+      </tr>
+      <tr>
+       <td><center>Hasło</center></td>
+       <td><center><%= f.password_field :password %></center></td>
+      </tr>
+      <tr>
+        <td><center>Powtórz hasło</center></td>
+        <td><center><%= f.password_field :password_confirmation %></center></td>
+      </tr>
+  </tbody>
+</table>
+  <%= f.submit "Zarejestruj", :class => 'button' %>
+<% end %>
+
+</center>
+<br>
+<%= devise_error_messages! %>
+

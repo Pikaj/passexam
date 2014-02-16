@@ -1,0 +1,30 @@
+<center>
+<h2>Logowanie</h2>
+
+<%= form_for(resource, :as => resource_name, :url => session_path(resource_name)) do |f| %>
+  
+  <table style="width: 600px">
+  <tbody>
+      <tr>
+       <td><center>E-mail</center></td>
+       <td><center> <%= f.email_field :email, :autofocus => true %></center></td>
+      </tr>
+      <tr>
+       <td><center>Hasło</center></td>
+       <td><center><%= f.password_field :password %></center></td>
+      </tr>
+      <% if devise_mapping.rememberable? -%>
+        <tr>
+          <td></td>
+          <td><%= f.check_box :remember_me %>Zapamiętaj mnie</td>
+        </tr>
+      <% end %>
+  </tbody>
+</table>
+
+  <%= f.submit "Zaloguj", :class => 'button' %>
+<% end %>
+
+<br>
+<%= render "devise/shared/links" %>
+</center>

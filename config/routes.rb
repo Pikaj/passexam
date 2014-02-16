@@ -21,12 +21,6 @@ Dyskretna::Application.routes.draw do
     resources :categories do
       resources :lists do
         resources :tasks do
-          member do
-            get 'im_done'
-            get 'im_done_cancel'
-            get 'too_hard'
-            get 'too_hard_cancel'
-          end
         end
       end
     end
