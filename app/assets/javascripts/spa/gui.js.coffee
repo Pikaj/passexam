@@ -28,7 +28,7 @@ class @Gui
     for np in noprogresses
       element = @_createElementFor("#noprogresses-record-template", 
         {category: np.task.list.category.name, list: np.task.list.name, task: np.task.name, user: np.user.email})
-      data_table += element.html()
+      data_table += element
     table = @_createElementFor("#table-noprogresses-template", {tbody: new Handlebars.SafeString(data_table)})
     $("#noprogresses-table").append(table)
 
@@ -139,7 +139,8 @@ class @Gui
     source = $(templateId).html()
     template = Handlebars.compile(source)
     html = template(data)
-    element = $(html)
+    # element = $(html)
+
 
 
   # findRestaurants: (city_name) =>
