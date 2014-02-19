@@ -1,7 +1,7 @@
 Dyskretna::Application.routes.draw do
 
   devise_for :users
-
+  get 'spa' => 'spa#index'
   resources :categories do
     resources :lists do
       resources :tasks do

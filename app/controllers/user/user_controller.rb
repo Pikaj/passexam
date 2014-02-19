@@ -1,5 +1,6 @@
 class User::UserController < UserController
   def index
-  	redirect_to user_categories_path
+  	@users = User.all
+  	render :json => @users.to_json
   end
 end

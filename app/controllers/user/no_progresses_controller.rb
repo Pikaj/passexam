@@ -2,6 +2,10 @@ class User::NoProgressesController < UserController
 
   def index
     @noprogresses = NoProgress.all
+    respond_to  do |format|
+      format.html 
+      format.json {render :json => @noprogresses.to_json} 
+    end
   end
 
   def new

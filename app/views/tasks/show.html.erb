@@ -46,10 +46,6 @@
             <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
             <li>
               <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
-          <% elsif task.status %>
-            <!-- ZADANIE ZROBIONE PRZEZ KOGOS INNEGO NA ŻÓŁTO -->
-            <li>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #F0E76B' %></li>
           <% elsif current_user.task_too_hard?(task) %>
             <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
             <li>

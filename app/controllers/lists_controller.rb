@@ -1,14 +1,11 @@
 class ListsController < ApplicationController
   before_action :set_list, only: [:show]
 
-  # GET /lists
-  # GET /lists.json
   def index
-    @lists = List.all
+    @lists = List.where(:category_id => params[:category_id])
+    render :json => @lists.to_json 
   end
 
-  # GET /lists/1
-  # GET /lists/1.json
   def show
     @list = List.find(params[:id])
   end
