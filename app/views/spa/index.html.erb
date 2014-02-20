@@ -18,7 +18,7 @@
       </a>
       <div class="nav-collapse" style="margin-top: 10px">
         <ul class="nav">
-          <li class="active"><%= link_to "Home", root_url %></li>
+          <li class="active"><%= link_to "Home", spa_path, :id => 'home-button' %></li>
           <% @categories.each do |category| %>
             <li class="dropdown" id="accountmenu">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
@@ -172,7 +172,71 @@
         </table>
 
         <div id="progress-table">
-        </div>s
+        </div>
+    </script>
+    <script type ="x-handlebars-template" id="ranking-template" >
+      <table>
+        <thead>
+          <tr>
+            <th>Miejsce</th>
+            <th>Nazwa</th>
+            <th>Przygotowanie</th>
+            <th>Zrobione zadania</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {{tbody}}
+        </tbody>
+      </table>
+    </script>
+    <script type ="x-handlebars-template" id="ranking-record-template" >
+        <tr>
+          <td><center>{{id}}</center></td>
+          <td><center>{{email}}</center></td>
+          <td><center>{{percent}} %</center></td>
+          <td><center>{{progresses}} / {{tasks_size}}</center></td>
+        </tr>
+    </script>
+    <script type ="x-handlebars-template" id="progress-template" >
+      {{block}}
+    </script>
+    <script type ="x-handlebars-template" id="block-progresses-template" >
+      <center><strong><h4>{{category}}</h4></strong></center>
+      <table>
+        <tbody>
+          {{tbody}}
+        </tbody>
+      </table>
+    </script>
+    <script type ="x-handlebars-template" id="record-progresses-template" >
+            <tr>
+              <td style="background-color: yellow; border-style:solid;border-width:1px;">
+                <center><strong>
+                  {{list}}
+                </strong></center>
+              </td>
+              {{tasks}}
+            </tr>
+    </script>
+    <script type ="x-handlebars-template" id="task-record-template" >
+          {{color}}
+            <center>
+              {{task}}
+            </center>
+          </td>
+    </script>
+    <script type="x-handlebars-template" id="green-task">
+      <td style='background-color: #A5D28C; border-style:solid;border-width:1px;'>
+    </script>
+    <script type="x-handlebars-template" id="blue-task">
+      <td style='background-color: #85A7FA; border-style:solid;border-width:1px;'>
+    </script>
+    <script type="x-handlebars-template" id="red-task">
+      <td style='background-color: #F9C8C8; border-style:solid;border-width:1px;'>
+    </script>
+    <script type="x-handlebars-template" id="white-task">
+      <td style='background-color: #FFFFFF; border-style:solid;border-width:1px;'>
     </script>
 
   <div id="main" class="container" style="margin-top: 70px">

@@ -23,14 +23,23 @@ class @Glue
 
       #tasks
       After(@useCase, "setLists", (lists) => @serverSide.getTasks(lists))
-      After(@serverSide, 'tasksLoaded', (tasks) => @useCase.setTasks(tasks))
+      After(@serverSide, 'tasksLoaded', (tasks,id) => @useCase.setTasks(tasks,id))
+
+      #noprogresses
+      After(@useCase, "loadNoProgress", => @serverSide.getNoprogresses())
+      After(@serverSide, 'noprogressesLoaded', (noprogresses) => @useCase.setNoprogresses(noprogresses))
+
+      #progresses
+      After(@useCase, "loadProgress", => @serverSide.getProgresses())
+      After(@serverSide, 'progressesLoaded', (progresses) => @useCase.setProgresses(progresses))
       #Data loaded
 
-      
-      After(@gui, "showNoprogresses", => @useCase.findNoprogresses())
-      After(@useCase, "getNoprogresses", => @serverSide.getNoprogresses())
-      After(@serverSide, 'noprogressesLoaded', (noprogresses) => @useCase.setNoprogresses(noprogresses))
+      After(@gui, "showNoprogresses", => @useCase.getNoprogresses())
       After(@useCase, "showNoProgress", (noprogresses) => @gui.showTableNoProgress(noprogresses))
+
+      After(@gui, "showStatistic", => @useCase.getProgresses())
+      After(@useCase, "showRanking", (users, tasks_size, progresses) => @gui.showRanking(users, tasks_size, progresses))
+      After(@useCase, "showProgress", (categories, progresses, noprogresses) => @gui.showProgress(categories, progresses, noprogresses))
 
       # After(@gui, "findRestaurants", (city_name) => @useCase.findRestaurants(city_name))
       # After(@gui, "afterMoveFormSearch", => @useCase.findCategories())

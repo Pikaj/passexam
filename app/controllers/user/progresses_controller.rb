@@ -1,6 +1,8 @@
 class User::ProgressesController < UserController
 
   def index
+    @progresses = Progress.all
+    render :json => @progresses.to_json
   end
 
   def new

@@ -1,27 +1,33 @@
 class @Gui
   constructor: ->
+    @current_user = null 
 
-  showApp: =>
+  changeUser: (@current_user) =>
+
+  showApp:  =>
     $("#statistic-button").click(@showStatistic)
+    $("#home-button").click(@showMotivation)
     element = @_createElementFor("#hero-template")
     $("#main").append(element)
     $("#content").html('')
     @showMotivation()
-    $("#noprogresses-button").click(@showNoprogresses)
 
   showFooter:=>
     element = @_createElementFor("#footer-template")
     $("#main").append(element)
 
   showMotivation: =>
+    $("#content").html('')
     element = @_createElementFor("#motivation-template")
     $("#content").append(element)
+    $("#noprogresses-button").click(@showNoprogresses)
+    return false
 
   showNoprogresses: =>
     $("#content").html('')
     element = @_createElementFor("#noprogresses-template")
     $("#content").append(element)
-    $("#comeback-button").click(@showApp)
+    $("#comeback-button").click(@showMotivation)
 
   showTableNoProgress: (noprogresses) =>
     data_table = ""
@@ -37,6 +43,67 @@ class @Gui
     element = @_createElementFor("#statistic-template")
     $("#content").append(element)
     return false
+
+  showRanking: (users, tasks_size, progresses) =>
+    data_table = ""
+    i = 1
+    for user in users
+      temp = _.filter(progresses, (p) => p.user_id  == user.id) 
+      per = (temp.length/tasks_size)*100.0
+      element = @_createElementFor("#ranking-record-template", 
+        {id: i, email: user.email, percent: per.toFixed(2), progresses: temp.length, tasks_size: tasks_size})
+      i += 1
+      data_table += element
+    table = @_createElementFor("#ranking-template", {tbody: new Handlebars.SafeString(data_table)})
+    $("#ranking-table").append(table)
+
+  showProgress: (categories, progresses, noprogresses) =>
+    data_table = ""
+    for cat in categories
+      if (cat.lists.length > 0)
+        element = @_createElementFor("#block-progresses-template", 
+          {category: cat.name, tbody: @showLists(cat, progresses, noprogresses)})
+        data_table += element
+    block = @_createElementFor("#progress-template", {block: new Handlebars.SafeString(data_table)})
+    $("#progress-table").append(block)
+
+  showLists: (category, progresses, noprogresses) =>
+    data_table = ""
+    for list in category.lists
+      element = @_createElementFor("#record-progresses-template", 
+        {list: list.name, tasks: @showTasks(list, progresses, noprogresses)})
+      data_table += element
+    new Handlebars.SafeString(data_table)
+
+  showTasks: (list, progresses, noprogresses) =>
+    data_table = ""
+    for task in list.tasks
+      element = @_createElementFor("#task-record-template", 
+        {color: @chooseColor(task, progresses, noprogresses), task: task.name })
+      data_table += element
+    new Handlebars.SafeString(data_table)
+
+  chooseColor: (task, progresses, noprogresses) =>
+    done = _.find(progresses, (p) => p.user_id == 1 && p.task_id == task.id)?
+    hard = _.find(noprogresses, (np) => np.user_id == 1 && np.task_id == task.id)?
+    #console.log( "task: "+task.name+ " Done: "+ done+" Hard: "+hard)
+    if done 
+      # ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO
+      element = @_createElementFor("#green-task")
+      new Handlebars.SafeString(element)
+    else if hard 
+      # ZADANIE ZA TRUDNE NA NIEBIESKO
+      element = @_createElementFor("#blue-task")
+      new Handlebars.SafeString(element)
+    else if task.level != null && task.level > 1 
+      # ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO
+      element = @_createElementFor("#red-task")
+      new Handlebars.SafeString(element)
+    else
+      # ZADANIE NA BIAŁO
+      element = @_createElementFor("#white-task")
+      new Handlebars.SafeString(element)
+
 
   # showForm: =>
   #   element = @_createElementFor("#city-form-template")

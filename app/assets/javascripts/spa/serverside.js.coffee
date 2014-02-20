@@ -79,6 +79,22 @@ class @ServerSide
 
   noprogressesLoaded: (noprogresses) ->
 
+#PROGRESSES
+  getProgresses: =>
+    $.ajax(
+          type: "GET"
+          url: "/user/progresses.json"
+          success: (progressesJson) =>
+            @progressesLoaded(@progressesFromJson(progressesJson))
+          error: =>
+            console.log("fail")
+          )
+
+  progressesFromJson: (json) => 
+    json.map (p) -> new Progress(p.task_id, p.user_id)
+
+  progressesLoaded: (progresses) ->
+
 #TASKS
   getTasks: (lists) =>
     for list in lists
@@ -87,14 +103,14 @@ class @ServerSide
             url: "/categories/#{list.category.id}/lists/#{list.id}/tasks.json"
             success: (tasksJson,a,query) =>
               query.list.tasks = tasksJson.map (t) -> new Task(t.id, t.name, t.url, t.level, query.list)
-              @tasksLoaded(query.list.tasks)
+              @tasksLoaded(query.list.tasks,query.list.id)
             error: =>
               console.log("fail")
             )
       query.list = list
       
  
-  tasksLoaded: (tasks) ->
+  tasksLoaded: (tasks,id) ->
 
 #LISTS
   getLists: (categories) =>
@@ -148,6 +164,9 @@ class @ServerSide
 
 
 class NoProgress
+  constructor: (@task_id, @user_id) ->
+
+class Progress
   constructor: (@task_id, @user_id) ->
 
 class Task
