@@ -6,6 +6,7 @@ class @UseCase
     @users = []
     @no_progresses = []
     @progresses = []
+    @current_user = null
 
   start: ->
 
@@ -29,6 +30,17 @@ class @UseCase
     if list_id == @lists[@lists.length-1].id
         @loadNoProgress()
         @loadProgress()
+  prepareTask: (c_id,l_id,t_id) =>
+    task = _.find(@tasks, (t) => t.id == t_id)
+    if task
+      @showTask(task, @progresses,@no_progresses)
+    else
+      alert('Zadanie Nie istnieje')
+
+  showTask: (t,progresses,no_progresses) =>
+
+  markedTask: (task, done) =>
+
 
 #CATEGORIES
   findCategories: =>
@@ -95,6 +107,7 @@ class @UseCase
 
   
 
+  
 #USER
   findUsers: =>
     @getUsers()

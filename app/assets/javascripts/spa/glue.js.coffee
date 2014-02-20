@@ -39,13 +39,9 @@ class @Glue
 
       After(@gui, "showStatistic", => @useCase.getProgresses())
       After(@useCase, "showRanking", (tasks_size, ranking) => @gui.showRanking(tasks_size, ranking))
-      After(@useCase, "showProgress", (categories, progresses, noprogresses) => @gui.showProgress(categories, progresses, noprogresses))
+      After(@useCase, "showProgress", 
+        (categories, progresses, noprogresses) => @gui.showProgress(categories, progresses, noprogresses))
 
-      # After(@gui, "findRestaurants", (city_name) => @useCase.findRestaurants(city_name))
-      # After(@gui, "afterMoveFormSearch", => @useCase.findCategories())
-      # After(@useCase, "getRestarantsForCity", (city_name) => @serverSide.getRestarantsForCity(city_name))
-      # After(@useCase, "getCategories", => @serverSide.getCategories())
-      # After(@serverSide, 'restaurantsLoaded', (restaurants) => @useCase.setRestaurants(restaurants))
-      # After(@serverSide, 'categoriesLoaded', (categories) => @useCase.setCategories(categories))
-      # After(@useCase, "setRestaurants", (restaurants) => @gui.showRestaurants(restaurants))
-      # After(@useCase, "setCategories", (categories) => @gui.showCategories(categories))
+
+      After(@gui, "prepareTask", (c,l,t) => @useCase.prepareTask(c,l,t))
+      After(@useCase, "showTask", (t,p,n) => @gui.showTask(t,p,n))

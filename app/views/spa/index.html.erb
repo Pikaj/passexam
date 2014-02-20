@@ -23,7 +23,7 @@
             <li class="dropdown" id="accountmenu">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
               <%if category.lists.size > 0 %>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu list_dropdown">
                 <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
                   <li class="dropdown-submenu">
                     <a tabindex="-1" href="#"><%= list.name %></a>
@@ -34,18 +34,18 @@
                                       <% if  current_user.task_done?(task) %> 
                                       <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
                                         <li style="background-color: #A5D28C">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
                                       <% elsif current_user.task_too_hard?(task) %>
                                       <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
                                         <li style="background-color: #85A7FA">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
                                       <% elsif  task.level != nil && task.level > 1 %>
                                       <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
                                         <li style="background-color: #F9C8C8">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
                                       <% else %>
                                       <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <li><%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
                                       <% end %>
                                   <% end %>
                           <% else %>
@@ -70,8 +70,10 @@
           <% end %>
         </ul>
         <ul class="nav pull-right">
+        <!-- ADMIN PANEL + SIGN IN/UP +STAISTIC -->
         <form class="navbar-form pull-right">
             <% if user_signed_in? %>
+                    <div id="user" style="display:none" data-id="<%= current_user.id %>"></div>
                     <strong><%= current_user.email.split("@").first.upcase %></strong> 
                     jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
                     <button class="button tiny secondary" id="statistic-button"> 
@@ -238,25 +240,56 @@
     <script type="x-handlebars-template" id="white-task">
       <td style='background-color: #FFFFFF; border-style:solid;border-width:1px;'>
     </script>
+<!-- TASKS -->
+    <script type ="x-handlebars-template" id="task-template" >
+        <center>
+        <h3>Zadanie: {{task}}&nbsp;&nbsp; {{category}}: {{list}}</h3>
+        </p>
+
+        <p>
+          <strong>Status:</strong>
+            {{status}}
+          <strong>Poziom trudności:</strong>
+            {{level}}
+        </p>
+
+        <br>
+          <img src={{url}} ><br>
+        <br>
+        <% if user_signed_in? %>
+              {{buttons}}
+        <% end %>
+
+        </center>
+    </script>
+    <script type ="x-handlebars-template" id="green-status-task-template" >
+      <font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font> 
+    </script>
+    <script type ="x-handlebars-template" id="red-status-task-template" >
+      <font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
+    </script>
+    <script type ="x-handlebars-template" id="green-level-task-template" >
+      <font color="green"> Łatwe </font> 
+    </script>
+    <script type ="x-handlebars-template" id="red-level-task-template" >
+      <font color="red"> Trudne </font> 
+    </script>
+    <script type ="x-handlebars-template" id="task-done-template" >
+        <strong> <span class="icon ok"/> <font color="green"> Zadanie zrobione &nbsp;&nbsp;&nbsp;</font> </strong>
+        <button class="button alert small"><span class="icon remove"></span>Anuluj</button>
+    </script>
+    <script type ="x-handlebars-template" id="task-hard-template" >
+          <strong> <span class="icon warning-sign"/> <font color="red"> Zadanie za trudne &nbsp;&nbsp;&nbsp;</font> </strong>
+          <button class="button alert small"><span class="icon remove"></span>Anuluj</button>
+    </script>
+    <script type ="x-handlebars-template" id="buttons-task-template" >
+      <button class="button success normal" id="marked-done"><span class="icon ok"></span>Zrobione</button>
+      <button class="button info normal"><span class="icon warning-sign" id="marked-hard"></span>Za trudne</button>
+    </script>
+
+
 
   <div id="main" class="container" style="margin-top: 70px">
-
-      <!-- <% if @current_controller == 'tasks' and @current_action =='show' %>
-              <div class="row" style="margin-left: -30px">
-                <div class="span2">
-                  <%= yield(:sidebar) %>
-                </div>
-                <div class="span10">
-                  <div class="hero-unit">
-                    <%= yield %>
-                  </div>
-                </div>
-              </div>
-          <% else %>
-              <div class="hero-unit">
-                <%= yield %>
-              </div>
-          <% end %> -->
 
   </div>
 </div>
