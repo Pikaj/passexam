@@ -24,19 +24,28 @@ class @Gui
     $("#main").append(element)
 
   showMotivation: =>
-    $("#content").html('')
-    element = @_createElementFor("#motivation-template")
-    $("#content").append(element)
-    $("#noprogresses-button").click(@showNoprogresses)
+    $("#content").fadeOut( => 
+      $("#content").html('')
+      element = @_createElementFor("#motivation-template")
+      $("#content").append(element).after( => $("#content").fadeIn())
+      $("#noprogresses-button").click(@showNoprogresses)
+    )
     return false
 
 #NO PROGRESSES
   showNoprogresses: =>
-    $("#content").html('')
-    element = @_createElementFor("#noprogresses-template")
-    $("#content").append(element)
-    $("#comeback-button").click(@showMotivation)
+    $("#content").fadeOut( => 
+      $("#content").html('')
+      element = @_createElementFor("#noprogresses-template")
+      $("#content").append(element).after(=> 
+        $("#content").fadeIn()
+        @noprogressesShowed
+      )
+      $("#comeback-button").click(@showMotivation)
+    )
 
+  noprogressesShowed: =>
+    
   showTableNoProgress: (noprogresses) =>
     data_table = ""
     for np in noprogresses
@@ -48,10 +57,18 @@ class @Gui
 
 #STATISTIC
   showStatistic: =>
-    $("#content").html('')
-    element = @_createElementFor("#statistic-template")
-    $("#content").append(element)
+    $("#content").fadeOut( => 
+      $("#content").html('')
+      element = @_createElementFor("#statistic-template")
+      $("#content").html(element).after(=> 
+        $("#content").fadeIn()
+        @staticShowed
+      )
+      
+    )
     return false
+
+  staticShowed: =>
 
   showRanking: (tasks_size, ranking) =>
     data_table = ""
@@ -62,6 +79,8 @@ class @Gui
       i += 1
       data_table += element
     table = @_createElementFor("#ranking-template", {tbody: new Handlebars.SafeString(data_table)})
+    console.log $("#ranking-table")
+
     $("#ranking-table").append(table)
 
   showProgress: (categories, progresses, noprogresses) =>
@@ -117,20 +136,22 @@ class @Gui
 #TASKS
 
   showTask: (task, progresses, noprogresses) =>
-    $("#content").html('')
-    done = _.find(progresses, (p) => p.user_id == 1 && p.task_id == task.id)?
-    hard = _.find(noprogresses, (np) => np.user_id == 1 && np.task_id == task.id)?
-    element = @_createElementFor("#task-template", {
-        task: task.name,
-        list: task.list.name,
-        category: task.list.category.name,
-        status: @showStatus(done),
-        level: @showLevel(task.level),
-        url: task.url,
-        buttons: @showButtons(done, hard)
-      })
-    $("#content").append(element)
-    return false
+    $("#content").fadeOut( => 
+      $("#content").html('')
+      done = _.find(progresses, (p) => p.user_id == 1 && p.task_id == task.id)?
+      hard = _.find(noprogresses, (np) => np.user_id == 1 && np.task_id == task.id)?
+      element = @_createElementFor("#task-template", {
+          task: task.name,
+          list: task.list.name,
+          category: task.list.category.name,
+          status: @showStatus(done),
+          level: @showLevel(task.level),
+          url: task.url,
+          buttons: @showButtons(done, hard)
+        })
+      $("#content").append(element).after( => $("#content").fadeIn())
+      return false
+    )
 
   showStatus: (done) =>
     if done

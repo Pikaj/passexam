@@ -1,97 +1,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pass Exam: Matematyka Dyskretna</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "spa" %>
-  <%= csrf_meta_tags %>
-  </head>
-  <body>
+    <title>Pass Exam: Matematyka Dyskretna</title>
+    <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "spa" %>
+    <%= csrf_meta_tags %>
+    </head>
+    <body>
 
-  <div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-        <span class="icon-bar"></span> 
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </a>
-      <div class="nav-collapse" style="margin-top: 10px">
-        <ul class="nav">
-          <li class="active"><%= link_to "Home", spa_path, :id => 'home-button' %></li>
-          <% @categories.each do |category| %>
-            <li class="dropdown" id="accountmenu">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
-              <%if category.lists.size > 0 %>
-                <ul class="dropdown-menu list_dropdown">
-                <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
-                  <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#"><%= list.name %></a>
-                      <%if list.tasks.size > 0 %>
-                        <ul class="dropdown-menu dropup-menu posfix">
-                         <% if user_signed_in? %>
-                                <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-                                      <% if  current_user.task_done?(task) %> 
-                                      <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
-                                        <li style="background-color: #A5D28C">
-                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
-                                      <% elsif current_user.task_too_hard?(task) %>
-                                      <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
-                                        <li style="background-color: #85A7FA">
-                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
-                                      <% elsif  task.level != nil && task.level > 1 %>
-                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-                                        <li style="background-color: #F9C8C8">
-                                        <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
-                                      <% else %>
-                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                                        <li><%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
-                                      <% end %>
-                                  <% end %>
-                          <% else %>
+    <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span> 
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </a>
+        <div class="nav-collapse" style="margin-top: 10px">
+          <ul class="nav">
+            <li class="active"><%= link_to "Home", spa_path, :id => 'home-button' %></li>
+            <% @categories.each do |category| %>
+              <li class="dropdown" id="accountmenu">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
+                <%if category.lists.size > 0 %>
+                  <ul class="dropdown-menu list_dropdown">
+                  <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
+                    <li class="dropdown-submenu">
+                      <a tabindex="-1" href="#"><%= list.name %></a>
+                        <%if list.tasks.size > 0 %>
+                          <ul class="dropdown-menu dropup-menu posfix">
+                           <% if user_signed_in? %>
                                   <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-                                      <% if  task.level != nil && task.level > 1 %>
-                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-                                        <li style="background-color: #F9C8C8">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% else %>
-                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% end %>
-                                <% end %>
-                         <% end %>
-                        </ul>
-                      <% end %>
-                  </li>
+                                        <% if  current_user.task_done?(task) %> 
+                                        <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
+                                          <li style="background-color: #A5D28C">
+                                          <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
+                                        <% elsif current_user.task_too_hard?(task) %>
+                                        <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
+                                          <li style="background-color: #85A7FA">
+                                          <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
+                                        <% elsif  task.level != nil && task.level > 1 %>
+                                        <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+                                          <li style="background-color: #F9C8C8">
+                                          <%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
+                                        <% else %>
+                                        <!-- ZADANIE PROSTE NIE ZROBIONE -->
+                                          <li><%= link_to task.name, category_list_task_path(category, list, task), data: {category: category.id, list:list.id, task:task.id} %></li>
+                                        <% end %>
+                                    <% end %>
+                            <% else %>
+                                    <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
+                                        <% if  task.level != nil && task.level > 1 %>
+                                        <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+                                          <li style="background-color: #F9C8C8">
+                                          <%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <% else %>
+                                        <!-- ZADANIE PROSTE NIE ZROBIONE -->
+                                          <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
+                                        <% end %>
+                                  <% end %>
+                           <% end %>
+                          </ul>
+                        <% end %>
+                    </li>
+                  <% end %>
+                  </ul>
                 <% end %>
-                </ul>
-              <% end %>
-            </li>
-          <% end %>
-        </ul>
-        <ul class="nav pull-right">
-        <!-- ADMIN PANEL + SIGN IN/UP +STAISTIC -->
-        <form class="navbar-form pull-right">
-            <% if user_signed_in? %>
-                    <div id="user" style="display:none" data-id="<%= current_user.id %>"></div>
-                    <strong><%= current_user.email.split("@").first.upcase %></strong> 
-                    jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
-                    <button class="button tiny secondary" id="statistic-button"> 
-                      <span class="icon trophy"></span>Statystyki
-                    </button>
-                    <%= link_to "Panel Admina", user_categories_path, :class => 'button tiny' %> 
-                    <%= link_to 'Edytuj konto', edit_user_registration_path, :class => 'button tiny' %> 
-                    <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Wyloguj</a>
-                <% else %>
-                    <a href="<%= new_user_session_path %>" class="button secondary"  ><span class='icon user'></span>Zaloguj</a>
-                    <a href="<%= new_user_registration_path %>" class="button" ><span class="icon pencil"></span>Zarejestruj</a>
-                <% end %>
-        </form>
-        </ul>
-      </div><!--/.nav-collapse -->
+              </li>
+            <% end %>
+          </ul>
+          <ul class="nav pull-right">
+          <!-- ADMIN PANEL + SIGN IN/UP +STAISTIC -->
+          <form class="navbar-form pull-right">
+              <% if user_signed_in? %>
+                      <div id="user" style="display:none" data-id="<%= current_user.id %>"></div>
+                      <strong><%= current_user.email.split("@").first.upcase %></strong> 
+                      jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
+                      <button class="button tiny secondary" id="statistic-button"> 
+                        <span class="icon trophy"></span>Statystyki
+                      </button>
+                      <%= link_to "Panel Admina", user_categories_path, :class => 'button tiny' %> 
+                      <%= link_to 'Edytuj konto', edit_user_registration_path, :class => 'button tiny' %> 
+                      <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Wyloguj</a>
+                  <% else %>
+                      <a href="<%= new_user_session_path %>" class="button secondary"  ><span class='icon user'></span>Zaloguj</a>
+                      <a href="<%= new_user_registration_path %>" class="button" ><span class="icon pencil"></span>Zarejestruj</a>
+                  <% end %>
+          </form>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
     </div>
-  </div>
-  </div>
+    </div>
     <script type ="x-handlebars-template" id="hero-template" >
       <div class="hero-unit">
         <div id="content">
@@ -120,6 +120,7 @@
           <center>
             <h3>Lista trudnych zadań</h3>
             <div id="noprogresses-table">
+            Wczytywanie Danych. Prosze czekać.
             </div>
             <button class="button secondary" id="comeback-button">Wróć</button>
           </center>

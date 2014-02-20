@@ -34,10 +34,10 @@ class @Glue
       After(@serverSide, 'progressesLoaded', (progresses) => @useCase.setProgresses(progresses))
       #Data loaded
 
-      After(@gui, "showNoprogresses", => @useCase.getNoprogresses())
+      After(@gui, "noprogressesShowed", => @useCase.getNoprogresses())
       After(@useCase, "showNoProgress", (noprogresses) => @gui.showTableNoProgress(noprogresses))
 
-      After(@gui, "showStatistic", => @useCase.getProgresses())
+      After(@gui, "staticShowed", => @useCase.getProgresses())
       After(@useCase, "showRanking", (tasks_size, ranking) => @gui.showRanking(tasks_size, ranking))
       After(@useCase, "showProgress", 
         (categories, progresses, noprogresses) => @gui.showProgress(categories, progresses, noprogresses))

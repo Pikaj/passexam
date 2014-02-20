@@ -39,9 +39,6 @@ class @UseCase
 
   showTask: (t,progresses,no_progresses) =>
 
-  markedTask: (task, done) =>
-
-
 #CATEGORIES
   findCategories: =>
     @getCategories()
@@ -104,9 +101,6 @@ class @UseCase
     ranking = _.sortBy(ranking, (o) -> o.tasks_size)
     #console.log(ranking.reverse())
     return ranking.reverse()
-
-  
-
   
 #USER
   findUsers: =>
