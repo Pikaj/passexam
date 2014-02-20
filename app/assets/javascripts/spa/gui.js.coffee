@@ -69,7 +69,8 @@ class @Gui
 
   showLists: (category, progresses, noprogresses) =>
     data_table = ""
-    for list in category.lists
+    lists = _.sortBy(category.lists, (o) -> parseInt(o.name))
+    for list in lists
       element = @_createElementFor("#record-progresses-template", 
         {list: list.name, tasks: @showTasks(list, progresses, noprogresses)})
       data_table += element
@@ -77,6 +78,7 @@ class @Gui
 
   showTasks: (list, progresses, noprogresses) =>
     data_table = ""
+    tasks = _.sortBy(list.tasks, (o) -> parseInt(o.name))
     for task in list.tasks
       element = @_createElementFor("#task-record-template", 
         {color: @chooseColor(task, progresses, noprogresses), task: task.name })
