@@ -77,7 +77,7 @@ class @Gui
   showTasks: (list, progresses, noprogresses) =>
     data_table = ""
     tasks = _.sortBy(list.tasks, (o) -> parseInt(o.name))
-    for task in list.tasks
+    for task in tasks
       element = @_createElementFor("#task-record-template", 
         {color: @chooseColor(task, progresses, noprogresses), task: task.name })
       data_table += element
