@@ -44,14 +44,12 @@ class @Gui
     $("#content").append(element)
     return false
 
-  showRanking: (users, tasks_size, progresses) =>
+  showRanking: (tasks_size, ranking) =>
     data_table = ""
-    i = 1
-    for user in users
-      temp = _.filter(progresses, (p) => p.user_id  == user.id) 
-      per = (temp.length/tasks_size)*100.0
+    i= 0 
+    for r in ranking
       element = @_createElementFor("#ranking-record-template", 
-        {id: i, email: user.email, percent: per.toFixed(2), progresses: temp.length, tasks_size: tasks_size})
+        {id: i+1, email: r.user.email, percent: r.percent, progresses: r.tasks_size, tasks_size: tasks_size})
       i += 1
       data_table += element
     table = @_createElementFor("#ranking-template", {tbody: new Handlebars.SafeString(data_table)})
@@ -105,7 +103,6 @@ class @Gui
       # ZADANIE NA BIAŁO
       element = @_createElementFor("#white-task")
       new Handlebars.SafeString(element)
-
 
   # showForm: =>
   #   element = @_createElementFor("#city-form-template")

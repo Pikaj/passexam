@@ -38,7 +38,7 @@ class @Glue
       After(@useCase, "showNoProgress", (noprogresses) => @gui.showTableNoProgress(noprogresses))
 
       After(@gui, "showStatistic", => @useCase.getProgresses())
-      After(@useCase, "showRanking", (users, tasks_size, progresses) => @gui.showRanking(users, tasks_size, progresses))
+      After(@useCase, "showRanking", (tasks_size, ranking) => @gui.showRanking(tasks_size, ranking))
       After(@useCase, "showProgress", (categories, progresses, noprogresses) => @gui.showProgress(categories, progresses, noprogresses))
 
       # After(@gui, "findRestaurants", (city_name) => @useCase.findRestaurants(city_name))

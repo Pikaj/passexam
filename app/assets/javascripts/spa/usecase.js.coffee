@@ -70,16 +70,30 @@ class @UseCase
       p.user = _.find(@users, (u) => u.id  == p.user_id)
       @progresses.push(p)
 
-  showRanking: (users, tasks_size, progresses) =>
+  showRanking: (tasks_size, ranking) =>
 
   showProgress: (categories, progresses, no_progresses) =>
 
   getProgresses: =>
     tasks_size = @tasks.length
-    @showRanking(@users, tasks_size, @progresses)
+    @showRanking(tasks_size, @makeRanking())
     @showProgress(@categories, @progresses, @no_progresses)
 
   loadProgress: =>
+
+  makeRanking: =>
+    ranking = []
+    i = 0
+    for user in @users
+      ts = _.filter(@progresses, (p) => p.user_id  == user.id) 
+      per = (ts.length/@tasks.length)*100.0
+      ranking[i] = new RankingData(user, per.toFixed(2), ts.length)
+      i += 1
+    ranking = _.sortBy(ranking, (o) -> o.tasks_size)
+    #console.log(ranking.reverse())
+    return ranking.reverse()
+
+  
 
 #USER
   findUsers: =>
@@ -88,3 +102,6 @@ class @UseCase
   getUsers: =>
 
   setUsers: (@users) =>
+
+class RankingData
+  constructor: (@user, @percent, @tasks_size) ->
