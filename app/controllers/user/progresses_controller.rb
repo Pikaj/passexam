@@ -2,7 +2,10 @@ class User::ProgressesController < UserController
 
   def index
     @progresses = Progress.all
-    render :json => @progresses.to_json
+    respond_to  do |format|
+      format.html 
+      format.json {render :json => @progresses.to_json} 
+    end
   end
 
   def new
