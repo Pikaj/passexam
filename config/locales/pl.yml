@@ -228,3 +228,13 @@ pl:
   hours: godz.
   minutes: min.
   seconds: s.
+
+  activerecord:
+      models:
+        user: Użytkownik
+      attributes:
+        user:
+          email: Adres e-mail
+          password: Hasło
+          password_confirmation: Powtórzenie hasła
+          current_password: Aktualne hasło

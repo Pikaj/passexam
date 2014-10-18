@@ -12,12 +12,17 @@
   </thead>
 
   <tbody>
+    <% if @category.lists.empty? %>
+      <tr>
+        <td><center> Brak list </center></td>
+      </tr>
+    <% end %>
     <% @category.lists.each do |list| %>
       <tr>
         <td><center><%= list.name %></center></td>
-        <td><%= link_to 'Pokaż', user_category_list_path(@category, list) %></td>
-        <td><%= link_to 'Edytuj', edit_user_category_list_path(@category, list) %></td>
-        <td><%= link_to 'Usuń', [:user, @category, list], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+        <td><%= link_to 'Pokaż', user_subject_category_list_path(@subject, @category, list) %></td>
+        <td><%= link_to 'Edytuj', edit_user_subject_category_list_path(@subject, @category, list) %></td>
+        <td><%= link_to 'Usuń', [:user, @subject, @category, list], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -27,5 +32,5 @@
 <%= render '/user/lists/form' %>
 
 <center>
-  <a href=<%= user_categories_path %> class="button secondary"></span>Wróć</a>
+  <a href=<%= user_subject_categories_path(@subject) %> class="button secondary"></span>Wróć</a>
 </center>

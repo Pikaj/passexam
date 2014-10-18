@@ -1,0 +1,12 @@
+<%= form_for [:user, @subject, @category, @list, @task, @solution] do |f| %>
+
+  <table>
+    <tbody>
+    <tr>
+      <td style="max-width: 110px"><strong> Twoje rozwiązanie (url): </strong></td>
+      <td><%= f.text_field :url %></td>
+      <td><%= f.submit "Dodaj", class: "button primary" %></td>
+    </tr>
+    </tbody>
+  </table>
+<% end %>

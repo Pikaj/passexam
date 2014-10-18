@@ -1,13 +1,15 @@
 <center>
-<h3>Zadanie: <%= @task.name %>&nbsp;&nbsp; <%= @task.list.category.name %>: <%= @task.list.name %></h3>
+<h3>Zadanie: <%= @task.name %>&nbsp;&nbsp; <%= @category.name %>: <%= @list.name %></h3>
 </p>
 
 <p>
-  <strong>Status:</strong>
-  <% if @task.status %> 
-    <font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font> 
-  <% else %>
-    <font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
+  <% if user_signed_in? %>
+    <strong>Status:</strong>
+    <% if current_user.task_done?(@task)  %>
+      <font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font>
+    <% else %>
+      <font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
+    <% end %>
   <% end %>
   <strong>Poziom trudności:</strong>
   <% if @task.level < 2 %>
@@ -23,14 +25,27 @@
 <% if user_signed_in? %>
       <% if current_user.task_done?(@task)  %>
         <strong> <span class="icon ok"/> <font color="green"> Zadanie zrobione &nbsp;&nbsp;&nbsp;</font> </strong>
-        <a href=<%= im_done_cancel_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
-      <% else %>
+        <a href=<%= im_done_cancel_subject_category_list_task_path(@subject, @category, @list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
+        <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz rozwiazania</a>
+        <p>
+          <% if solution = @task.solutions.where(:user => current_user).first %>
+            <p><img src=<%=solution.url %> ></p>
+            <%= link_to [:user, @subject, @category, @list, @task, solution], method: :delete, data: { confirm: 'Jesteś pewny?' }, class: "button alert" do %>
+              <span class="icon remove"></span>
+              Usuń rozwiazanie
+            <% end %>
+          <% else %>
+            <%= render 'form' %>
+          <% end %>
+        </p>
+    <% else %>
         <% if current_user.task_too_hard?(@task) %>
           <strong> <span class="icon warning-sign"/> <font color="red"> Zadanie za trudne &nbsp;&nbsp;&nbsp;</font> </strong>
-          <a href=<%= too_hard_cancel_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
-        <% else %>
-          <a href=<%= im_done_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button success normal"><span class="icon ok"></span>Zrobione</a>
-          <a href=<%= too_hard_category_list_task_path(@task.list.category, @task.list, @task)  %> class="button info normal"><span class="icon warning-sign"></span>Za trudne</a>
+          <a href=<%= too_hard_cancel_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
+        <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz rozwiazania</a>
+      <% else %>
+          <a href=<%= im_done_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button success normal"><span class="icon ok"></span>Zrobione</a>
+          <a href=<%= too_hard_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button info normal"><span class="icon warning-sign"></span>Za trudne</a>
         <% end %>
       <% end %>
 <% end %>
@@ -45,30 +60,30 @@
           <% if  current_user.task_done?(task) %>
             <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
             <li>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
+              <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
           <% elsif current_user.task_too_hard?(task) %>
             <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
             <li>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #85A7FA' %></li>
+              <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #85A7FA' %></li>
           <% elsif  task.level != nil && task.level > 1 %>
             <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
             <li>
-              <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %>
+              <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %>
               </li>
           <% else %>
             <!-- ZADANIE PROSTE NIE ZROBIONE -->
-            <li><%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %></li>
+            <li><%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task) %></li>
           <% end %>
         <% end %>
     <% else %> 
         <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
             <% if  task.level > 1 %>
-              <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+              <!-- ZADANIE TRUDNE NA CZERWONO-->
               <li>
-                <%= link_to task.name, category_list_task_path(task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %></li>
+                <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %></li>
             <% else %>
-              <!-- ZADANIE PROSTE NIE ZROBIONE -->
-              <li><%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %></li>
+              <!-- ZADANIE PROSTE -->
+              <li><%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task) %></li>
             <% end %>
           <% end %>
     <% end %>

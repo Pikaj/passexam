@@ -3,14 +3,16 @@ class CategoriesController < ApplicationController
 
   # GET /categories
   # GET /categories.json
-  def index   
-    @categories = Category.all
+  def index
+    @subject = Subject.find(params[:subject_id])
+    @categories = @subject.categories
     render :json => @categories.to_json 
   end
 
   # GET /categories/1
   # GET /categories/1.json
   def show
+    @subject = Subject.find(params[:subject_id])
     @category = Category.find(params[:id])
   end
 

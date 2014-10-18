@@ -6,6 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :progresses
   has_many :no_progresses
+  has_many :solutions
 
   has_many :tasks, :through => :progresses
   has_many :tasks, :through => :noprogresses
@@ -18,8 +19,8 @@ class User < ActiveRecord::Base
   	!self.no_progresses.where(:task_id => task.id).empty?
   end
 
-  def task_counter
-    lists = List.all
+  def task_counter(subject)
+    lists = subject.categories.map(&:lists).flatten
     tasks_size = lists.map{ |l| l.tasks.size }.sum
     if (tasks_size > 0)
       counter = (self.progresses.size.to_f/tasks_size.to_f)*100.0
@@ -29,4 +30,11 @@ class User < ActiveRecord::Base
     return counter.round(2)
   end
 
+  def ready_form
+    if self.email.split("@")[0].split(".")[0].last == "a"
+      "przygotowana"
+    else
+      "przygotowany"
+    end
+  end
 end

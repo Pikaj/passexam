@@ -1,0 +1,20 @@
+
+<%= form_for [:user, @subject] do |f| %>
+
+  <table>
+    <tbody>
+    <tr>
+      <td><center><strong> Nazwa: </strong></center></td>
+      <td><%= f.text_field :name %></td>
+    </tr>
+    <tr>
+      <td><center><strong> Pierwszy termin: </strong></center></td>
+      <td><%= f.text_field :first_exam, :value => @subject.exam_date_first, placeholder: "15-02-2015 10:00" %></td>
+    <tr>
+      <td><center><strong> Drugi termin: </strong></center></td>
+      <td><%= f.text_field :second_exam, :value => @subject.exam_date_second, placeholder: "25-02-2015 10:00" %></td>
+    </tr>
+    <td></td><td><center><%= f.submit "Zatwierdź"%></center></td>
+    </tbody>
+  </table>
+<% end %>

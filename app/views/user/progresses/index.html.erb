@@ -15,7 +15,7 @@
       <tr>
        <td><center><%= index+1 %></center></td>
        <td><center><%= user.email.split("@").first.upcase %></center></td>
-       <td><center><%= user.task_counter %> %</center></td>
+       <td><center><%= user.task_counter(@subject) %> %</center></td>
        <td><center><%= user.progresses.size %> / <%= @tasks_size %></center></td>
       </tr>
     <% end %>
@@ -39,7 +39,7 @@
   </tbody>
 </table>
 
-<% @categories.each do |category| %>
+<% @subject.categories.each do |category| %>
   <% if !category.lists.empty? %>
     <center><strong><h4><%= category.name %></h4></strong></center>
     <table>
@@ -47,7 +47,7 @@
       <tbody>
         <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
           <tr>
-            <td style="background-color: yellow; border-style:solid;border-width:1px;">
+            <td style="background-color: #dddf64; border-style:solid;border-width:1px;">
               <center><strong>
                 <%= list.name %>
               </strong></center>
@@ -67,7 +67,7 @@
                 <td style='background-color: #FFFFFF; border-style:solid;border-width:1px;'>
               <% end %>
                   <center>
-                  <%= link_to task.name, category_list_task_path(task.list.category, task.list, task) %>
+                  <%= link_to task.name, subject_category_list_task_path(@subject, task.list.category, task.list, task) %>
                   </center>
                 </td>
             <% end %>

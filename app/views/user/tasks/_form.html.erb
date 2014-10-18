@@ -1,13 +1,13 @@
-<%= form_for [:user, @list.category, @list, @task] do |f| %>
+<%= form_for [:user, @subject, @category, @list, @task] do |f| %>
     
     <table>
       <tbody>
         <tr>
           <td><center><strong> Nazwa: </strong></center></td>
           <td><%= f.text_field :name %></td>
-        <tr>
         </tr>
-          <td><center><strong> Treść: </strong></center></td>
+        <tr>
+          <td><center><strong> Treść (url): </strong></center></td>
           <td><%= f.text_field :url %></td>
         <tr>  
           <td><center><strong> Status: </strong></center></td>

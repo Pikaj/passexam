@@ -2,7 +2,10 @@ class User::TasksController < UserController
   before_action :set_task, only: [:show, :edit, :update, :destroy]
 
   def index
-    @tasks = Task.all
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
+    @tasks = @list.tasks
   end
 
   def new
@@ -10,37 +13,50 @@ class User::TasksController < UserController
   end
 
   def edit
-    @task = Task.find(params[:id])
-    @list = @task.list
-    @category = @list.category
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
+    @task = @list.tasks.find(params[:id])
   end
 
   def create
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
     @task = Task.new(task_params)
-    @task.list_id = params[:list_id]
+    @task.list = @list
     @task.save
-    redirect_to category_list_path(@task.list.category, @task.list)
+    redirect_to user_subject_category_list_path(@subject, @category, @list)
   end
 
   def update
-    @task = Task.find(params[:id])
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
+    @task = @list.tasks.find(params[:id])
 
     if @task.update(task_params)
-      redirect_to user_category_list_path(@task.list.category, @task.list)
+      redirect_to user_subject_category_list_path(@subject, @category, @list)
     else
       render 'edit'
     end
   end
 
   def destroy
-    @list = @task.list
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
+    @task = @list.tasks.find(params[:id])
     @task.destroy
-    redirect_to user_category_list_path(@list.category, @list)
+    redirect_to user_subject_category_list_path(@subject, @category, @list)
   end
 
   private
     def set_task
-      @task = Task.find(params[:id])
+      @subject = Subject.find(params[:subject_id])
+      @category = @subject.categories.find(params[:category_id])
+      @list = @category.lists.find(params[:list_id])
+      @task = @list.tasks.find(params[:id])
     end
 
     def task_params

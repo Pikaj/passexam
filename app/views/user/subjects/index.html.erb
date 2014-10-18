@@ -1,0 +1,37 @@
+<h1>Lista przedmiotów</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th>Pierwszy termin</th>
+    <th>Drugi termin </th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% if @subjects.empty? %>
+    <tr>
+      <td><center> Brak przedmiotów </center></td>
+    </tr>
+  <% end %>
+  <% @subjects.each do |subject| %>
+    <tr>
+      <td><center><%= subject.name %></center></td>
+      <td><center><%= subject.first_exam.present? ? subject.first_exam.strftime("%d-%m-%Y %H:%M") : "brak terminu"%></center></td>
+      <td><center><%= subject.second_exam.present? ? subject.second_exam.strftime("%d-%m-%Y %H:%M") : "brak terminu"%></center></td>
+      <td><%= link_to 'Pokaż', user_subject_categories_path(subject) %></td>
+      <td><%= link_to 'Edytuj', edit_user_subject_path(subject) %></td>
+      <td><%= link_to 'Usuń', [:user, subject], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h3> Dodaj nowy przedmiot</h3>
+<%= render 'form' %> 

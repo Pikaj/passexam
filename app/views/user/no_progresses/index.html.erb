@@ -10,12 +10,17 @@
   </thead>
 
   <tbody>
+    <% if @noprogresses.uniq!(&:task_id).empty? %>
+      <tr>
+        <td><center> Brak trudnych zadań! :) </center></td>
+      </tr>
+    <% end %>
     <% @noprogresses.uniq!(&:task_id).each do |noprogress| %>
       <tr>
         <td><center><%= noprogress.task.list.category.name %></center></td>
         <td><center><%= noprogress.task.list.name %></center></td>
-        <td><center><strong><%= link_to noprogress.task.name, category_list_task_path(noprogress.task.list.category, noprogress.task.list, noprogress.task) %></strong></center></td>
-        <td><center><%= noprogress.user.email.split("@").first.upcase %></center></center>
+        <td><center><strong><%= link_to noprogress.task.name, subject_category_list_task_path(@subject, noprogress.task.list.category, noprogress.task.list, noprogress.task) %></strong></center></td>
+        <td><center><%= noprogress.user.email.split("@").first.upcase %></center></td>
       </tr>
     <% end %>
   </tbody>

@@ -1,0 +1,6 @@
+<center>
+  <img src="/pinguin.gif" alt="Motywacja" /><br>
+  <% if user_signed_in? %>
+      <a href=<%= user_subject_no_progresses_path(@subject) %> class="button secondary"></span>Lista trudnych zadań</a>
+  <% end %>
+</center>

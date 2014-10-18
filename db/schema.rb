@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140111010248) do
+ActiveRecord::Schema.define(version: 20141018145044) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "subject_id"
   end
+
+  add_index "categories", ["subject_id"], name: "index_categories_on_subject_id"
 
   create_table "lists", force: true do |t|
     t.string   "name"
@@ -33,8 +36,10 @@ ActiveRecord::Schema.define(version: 20140111010248) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "subject_id"
   end
 
+  add_index "no_progresses", ["subject_id"], name: "index_no_progresses_on_subject_id"
   add_index "no_progresses", ["task_id"], name: "index_no_progresses_on_task_id"
   add_index "no_progresses", ["user_id"], name: "index_no_progresses_on_user_id"
 
@@ -43,10 +48,31 @@ ActiveRecord::Schema.define(version: 20140111010248) do
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "subject_id"
   end
 
+  add_index "progresses", ["subject_id"], name: "index_progresses_on_subject_id"
   add_index "progresses", ["task_id"], name: "index_progresses_on_task_id"
   add_index "progresses", ["user_id"], name: "index_progresses_on_user_id"
+
+  create_table "solutions", force: true do |t|
+    t.string   "url"
+    t.integer  "user_id"
+    t.integer  "task_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "solutions", ["task_id"], name: "index_solutions_on_task_id"
+  add_index "solutions", ["user_id"], name: "index_solutions_on_user_id"
+
+  create_table "subjects", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.datetime "first_exam"
+    t.datetime "second_exam"
+  end
 
   create_table "tasks", force: true do |t|
     t.string   "name"

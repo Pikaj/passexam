@@ -1,33 +1,39 @@
 Dyskretna::Application.routes.draw do
 
-  devise_for :users
+  devise_for :users, :controllers => {:sessions => "sessions", :registrations => "registrations"}
   get 'spa' => 'spa#index'
-  resources :categories do
-    resources :lists do
-      resources :tasks do
-        member do
-            get 'im_done'
-            get 'im_done_cancel'
-            get 'too_hard'
-            get 'too_hard_cancel'
-          end
+  resources :subjects do
+    resources :categories do
+      resources :lists do
+        resources :tasks do
+          resources :solutions
+          member do
+              get 'im_done'
+              get 'im_done_cancel'
+              get 'too_hard'
+              get 'too_hard_cancel'
+            end
+        end
       end
     end
   end
 
   namespace :user do
-    resources :no_progresses
-    resources :progresses
-    resources :categories do
-      resources :lists do
-        resources :tasks do
+    resources :subjects do
+      resources :no_progresses
+      resources :progresses
+      resources :categories do
+        resources :lists do
+          resources :tasks do
+            resources :solutions
+          end
         end
       end
     end
     get '/' => "user#index"
   end
 
-  root 'welcome#index'
+  root 'subjects#index'
 
 
   # The priority is based upon order of creation: first created -> highest priority.

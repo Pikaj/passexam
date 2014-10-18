@@ -1,0 +1,11 @@
+
+<center>
+  <h3>Wybierz przedmiot</h3>
+
+  <% @subjects.each do |subject| %>
+    <br>
+    <p>
+      <%= link_to subject.name, subject_path(subject), :class => "button secondary"%>
+    </p>
+  <% end %>
+ </center>
