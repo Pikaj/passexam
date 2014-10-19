@@ -16,7 +16,7 @@
        <td><center><%= index+1 %></center></td>
        <td><center><%= user.email.split("@").first.upcase %></center></td>
        <td><center><%= user.task_counter(@subject) %> %</center></td>
-       <td><center><%= user.progresses.size %> / <%= @tasks_size %></center></td>
+       <td><center><%= user.progresses_tasks(@subject) %> / <%= @subject.tasks_size %></center></td>
       </tr>
     <% end %>
   </tbody>

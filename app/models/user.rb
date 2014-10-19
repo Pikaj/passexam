@@ -20,14 +20,20 @@ class User < ActiveRecord::Base
   end
 
   def task_counter(subject)
+    progresses_tasks = self.progresses_tasks(subject)
     lists = subject.categories.map(&:lists).flatten
     tasks_size = lists.map{ |l| l.tasks.size }.sum
     if (tasks_size > 0)
-      counter = (self.progresses.size.to_f/tasks_size.to_f)*100.0
+      counter = (progresses_tasks.to_f/tasks_size.to_f)*100.0
     else 
       counter = 0
     end
     return counter.round(2)
+  end
+
+  def progresses_tasks(subject)
+    progresses = self.progresses.where(:subject_id => subject.id)
+    progresses.size
   end
 
   def ready_form

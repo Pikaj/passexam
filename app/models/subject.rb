@@ -23,4 +23,8 @@ class Subject < ActiveRecord::Base
   def exam_date_second
     self.second_exam.present? ? self.second_exam.strftime("%d-%m-%Y %H:%M") : ""
   end
+
+  def tasks_size
+    self.categories.map(&:lists).flatten.map(&:tasks).flatten.size
+  end
 end
