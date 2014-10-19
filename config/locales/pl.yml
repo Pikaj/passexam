@@ -224,6 +224,10 @@ pl:
     errors:
       <<: *errors
 
+  year: rok
+  years: lat
+  months: miesiące
+  month: miesiac
   days: dni
   hours: godz.
   minutes: min.
