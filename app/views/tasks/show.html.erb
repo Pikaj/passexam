@@ -6,7 +6,11 @@
   <% if user_signed_in? %>
     <strong>Status:</strong>
     <% if current_user.task_done?(@task)  %>
-      <font color="green"> Zrobione &nbsp;&nbsp;&nbsp;</font>
+      <% if current_user.is_verified_solution?(@task) %>
+        <font color="green"> Zrobione sprawdzone &nbsp;&nbsp;&nbsp;</font>
+      <% else %>
+        <font color="#ff8c00"> Zrobione niesprawdzone &nbsp;&nbsp;&nbsp;</font>
+      <% end %>
     <% else %>
       <font color="red"> Nie zrobione &nbsp;&nbsp;&nbsp;</font>
     <% end %>
@@ -16,7 +20,14 @@
     <font color="green"> Łatwe </font> 
   <% else %>
     <font color="red"> Trudne </font>
-  <% end %> 
+  <% end %>
+  <br>
+  <strong>Liczba rozwiązań:</strong>
+  <% if @task.solutions.empty? %>
+      <font color="red"> brak </font>
+  <% else %>
+      <font color="green"> <%= @task.solutions.size %> </font>
+  <% end %>
 </p>
 
 <br>
@@ -26,7 +37,7 @@
       <% if current_user.task_done?(@task)  %>
         <strong> <span class="icon ok"/> <font color="green"> Zadanie zrobione &nbsp;&nbsp;&nbsp;</font> </strong>
         <a href=<%= im_done_cancel_subject_category_list_task_path(@subject, @category, @list, @task)  %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
-        <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz rozwiazania</a>
+        <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz wszystkie rozwiazania</a>
         <p>
           <% if solution = @task.solutions.where(:user => current_user).first %>
             <p><img src=<%=solution.url %> ></p>
@@ -34,17 +45,31 @@
               <span class="icon remove"></span>
               Usuń rozwiazanie
             <% end %>
-          <% else %>
+          <% elsif @task.solutions.empty? %>
             <%= render 'form' %>
+          <% else%>
+            <%= render 'form' %>
+            <p><center>
+                Rozwiązanie dodane przez:
+                <strong><%= @task.solutions.first.user.email.split("@").first.upcase %></strong>
+            </center></p>
+            <p style="margin-top: 10px;"><img src=<%=@task.solutions.first.url %> ></p>
           <% end %>
         </p>
     <% else %>
         <% if current_user.task_too_hard?(@task) %>
           <strong> <span class="icon warning-sign"/> <font color="red"> Zadanie za trudne &nbsp;&nbsp;&nbsp;</font> </strong>
           <a href=<%= too_hard_cancel_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button alert small"><span class="icon remove"></span>Anuluj</a>
-        <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz rozwiazania</a>
-      <% else %>
-          <a href=<%= im_done_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button success normal"><span class="icon ok"></span>Zrobione</a>
+          <a href=<%= subject_category_list_task_solutions_path(@subject, @category, @list, @task)  %> class="button secondary small"><span class="icon book"></span>Zobacz wszystkie rozwiazania</a>
+          <% if @task.solutions.present? %>
+              <p><center>
+                  Rozwiązanie dodane przez:
+                  <strong><%= @task.solutions.first.user.email.split("@").first.upcase %></strong>
+              </center></p>
+              <p style="margin-top: 10px;"><img src=<%=@task.solutions.first.url %> ></p>
+          <% end %>
+        <% else %>
+          <a href='#' class="button success normal" data-toggle="modal" data-target="#isVerifiedSolution"><span class="icon ok"></span>Zrobione</a>
           <a href=<%= too_hard_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button info normal"><span class="icon warning-sign"></span>Za trudne</a>
         <% end %>
       <% end %>
@@ -58,9 +83,15 @@
     <% if user_signed_in? %>
         <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
           <% if  current_user.task_done?(task) %>
-            <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
-            <li>
-              <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
+            <% if current_user.is_verified_solution?(task) %>
+                <!-- ZADANIE ZROBIONE PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
+                <li>
+                  <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
+            <% else %>
+                <!-- ZADANIE ZROBIONE PRZEZ CIEBIE  NIESPRAWDZONE NA ZIELONO -->
+                <li>
+                  <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F5B24E' %></li>
+            <% end %>
           <% elsif current_user.task_too_hard?(task) %>
             <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
             <li>
@@ -89,3 +120,18 @@
     <% end %>
   </ul>
 <% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="isVerifiedSolution" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        Jesteś pewny, że Twoje rozwiązanie jest poprawne?
+      </div>
+      <div class="modal-footer">
+        <a href=<%= im_done_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button alert small" style="margin-bottom: 0px;">Nie</a>
+        <a href=<%= im_sure_done_subject_category_list_task_path(@subject, @category, @list, @task)   %> class="button success small" >Tak</a>
+      </div>
+    </div>
+  </div>
+</div>

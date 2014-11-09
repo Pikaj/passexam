@@ -14,13 +14,26 @@ class TasksController < ApplicationController
     @solution = Solution.new
   end
 
-   def im_done
+  def im_done
      @subject = Subject.find(params[:subject_id])
      @category = @subject.categories.find(params[:category_id])
      @list = @category.lists.find(params[:list_id])
      @task = @list.tasks.find(params[:id])
     if !current_user.task_done?(@task)
-      @progress = Progress.create(:task => @task, :user => current_user, :subject => @subject)
+      @progress = Progress.create(:task => @task, :user => current_user, :subject => @subject, :is_verified => false)
+      @task.status = true
+      @task.save
+    end
+    redirect_to subject_category_list_task_path(@subject, @category, @list, @task), notice: 'Task was marked as done.'
+  end
+
+  def im_sure_done
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:list_id])
+    @task = @list.tasks.find(params[:id])
+    if !current_user.task_done?(@task)
+      @progress = Progress.create(:task => @task, :user => current_user, :subject => @subject, :is_verified => true)
       @task.status = true
       @task.save
     end

@@ -9,6 +9,7 @@ Dyskretna::Application.routes.draw do
           resources :solutions
           member do
               get 'im_done'
+              get 'im_sure_done'
               get 'im_done_cancel'
               get 'too_hard'
               get 'too_hard_cancel'

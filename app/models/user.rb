@@ -15,6 +15,10 @@ class User < ActiveRecord::Base
   	!self.progresses.where(:task_id => task.id).empty?
   end
 
+  def is_verified_solution?(task)
+    self.progresses.where(:task_id => task.id).first.is_verified
+  end
+
   def task_too_hard?(task)
   	!self.no_progresses.where(:task_id => task.id).empty?
   end

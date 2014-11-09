@@ -28,13 +28,15 @@
   <tbody>
     <tr>
       <td style='background-color: #A5D28C;'>
-        <center>Zrobione </center></td>
+        <center>Zrobione sprawdzone</center></td>
+      <td style='background-color: #F5B24E;'>
+        <center>Zrobione niesprawdzone</center></td>
       <td style='background-color: #85A7FA;'>
-        <center>Zgłoszone jako za trudne</center></td>
+        <center>Oznaczone jako za trudne</center></td>
       <td style='background-color: #F9C8C8;'>
-        <center>Nie zrobione - trudne </center></td>
+        <center>Niezrobione - trudne </center></td>
       <td style='background-color: #FFFFFF;'>
-        <center>Nie zrobione - łatwe</center></td>
+        <center>Niezrobione - łatwe</center></td>
     </tr>
   </tbody>
 </table>
@@ -47,15 +49,20 @@
       <tbody>
         <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
           <tr>
-            <td style="background-color: #dddf64; border-style:solid;border-width:1px;">
+            <td style="background-color: #dddf54; border-style:solid;border-width:1px;">
               <center><strong>
                 <%= list.name %>
               </strong></center>
             </td>
             <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
               <% if  current_user.task_done?(task) %>
-                <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
-                <td style='background-color: #A5D28C; border-style:solid;border-width:1px;'>
+                <% if current_user.is_verified_solution?(task) %>
+                    <!-- ZADANIE ZROBIONE PRZEZ CIEBIE I SPRAWDZONE NA ZIELONO -->
+                    <td style='background-color: #A5D28C; border-style:solid;border-width:1px;'>
+                <% else %>
+                    <!-- ZADANIE ZROBIONE PRZEZ CIEBIE I NIESPRAWDZONE NA POMARAŃCZOWO-->
+                    <td style='background-color: #F5B24E; border-style:solid;border-width:1px;'>
+                <% end %>
               <% elsif  task.too_hard? %>
                 <!-- ZADANIE ZA TRUDNE NA NIEBIESKO -->
                 <td style='background-color: #85A7FA; border-style:solid;border-width:1px;'>

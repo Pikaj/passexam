@@ -10,4 +10,5 @@ class User::ProgressesController < UserController
       format.json {render :json => @progresses.to_json} 
     end
   end
+
 end
