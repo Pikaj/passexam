@@ -2,7 +2,8 @@ class ListsController < ApplicationController
   before_action :set_list, only: [:show]
 
   def index
-    @lists = List.where(:category_id => params[:category_id])
+    @category = Category.find(params[:category_id])
+    @lists = @category.lists
     render :json => @lists.to_json 
   end
 

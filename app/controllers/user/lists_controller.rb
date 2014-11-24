@@ -4,13 +4,16 @@ class User::ListsController < UserController
   end
 
   def index
-    @lists = List.all
-    @category = Category.find(params[:category_id])
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @lists = @category.lists
     @list = List.new
   end
 
   def show
-    @list = List.find(params[:id])
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:id])
     @task = Task.new
   end
 
@@ -18,26 +21,30 @@ class User::ListsController < UserController
     @list = List.new(list_params)
     @list.category_id = params[:category_id]
     @list.save
-    redirect_to user_category_path(@list.category)
+    redirect_to user_subject_category_path(@list.category.subject, @list.category)
   end
 
   def edit
-    @list = List.find(params[:id])
-    @category = @list.category
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:id])
   end
 
   def destroy
-    @list = List.find(params[:id])
-    @category = @list.category
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:id])
     @list.destroy
-    redirect_to user_category_path(@category)
+    redirect_to user_subject_category_path(@subject, @category)
   end
 
   def update
-    @list = List.find(params[:id])
+    @subject = Subject.find(params[:subject_id])
+    @category = @subject.categories.find(params[:category_id])
+    @list = @category.lists.find(params[:id])
 
     if @list.update(params[:list].permit(:name))
-      redirect_to user_category_path(@list.category)
+      redirect_to user_subject_category_path(@subject, @category)
     else
       render 'edit'
     end

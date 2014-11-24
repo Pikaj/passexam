@@ -24,11 +24,12 @@
     </tbody>
   </table>
 
-<%= f.submit "Aktualizuj", :class => 'button'  %>
+
+  <button type="submit" class="button primary" style="margin-top: -5px;">Aktualizuj</button>
+  <a href=<%= root_path %> class="button secondary">Anuluj</a>
+
 <% end %>
 <br>
-
-<%= button_to "Usuń moje konto", registration_path(resource_name), :data => { :confirm => "Jesteś pewny?" }, :method => :delete, :class => 'button alert' %>
 
 </center>
 <br>

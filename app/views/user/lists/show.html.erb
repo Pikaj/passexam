@@ -5,7 +5,7 @@
   <thead>
     <tr>
       <th>Zadanie</th>
-      <th>Treść</th>
+      <th >Treść</th>
       <th>Status</th>
       <th>Poziom trudności</th>
       <th></th>
@@ -15,10 +15,15 @@
   </thead>
 
   <tbody>
+    <% if @list.tasks.empty? %>
+      <tr>
+        <td><center> Brak zadań </center></td>
+      </tr>
+    <% end %>
     <% @list.tasks.each do |task| %>
       <tr>
         <td><center><%= task.name %></center></td>
-        <td><center><a href=<%= task.url %>><%= task.url %></a></center></td>
+        <td><center><a href=<%= task.url %>>Link do treści <%= task.name %></a></center></td>
         <td><center><% if task.status %>
               <font color="green"> Zrobione </font> 
             <% else %>
@@ -29,9 +34,9 @@
             <% else %>
               <font color="red"> Trudne </font>
             <% end %></center></td>
-        <td><%= link_to 'Pokaż', category_list_task_path(@list.category, @list, task) %></td>
-        <td><%= link_to 'Edytuj', edit_user_category_list_task_path(@list.category, @list, task) %></td>
-        <td><%= link_to 'Usuń', [:user, @list.category,@list, task], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+        <td><%= link_to 'Pokaż', subject_category_list_task_path(@subject, @category, @list, task) %></td>
+        <td><%= link_to 'Edytuj', edit_user_subject_category_list_task_path(@subject, @category, @list, task) %></td>
+        <td><%= link_to 'Usuń', [:user, @subject, @category, @list, task], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -41,5 +46,5 @@
 <%= render '/user/tasks/form' %>
 
 <center>
-<a href=<%= user_category_path(@list.category) %> class="button secondary"></span>Wróć</a>
+<a href=<%= user_subject_category_path(@subject, @category) %> class="button secondary"></span>Wróć</a>
 </center>

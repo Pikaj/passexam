@@ -1,0 +1,68 @@
+<center>
+  <h3>Rozwiązania do zadania: <%= @task.name %>&nbsp;&nbsp; <%= @category.name %>: <%= @list.name %></h3>
+  </p>
+  <table>
+    <thead>
+    <tr>
+      <th>Autor</th>
+      <th>Rozwiązanie</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <% if @solutions.empty? %>
+      <tr>
+        <td></td>
+        <td><center> Brak rozwiazań :( </center></td>
+      </tr>
+    <% end %>
+    <% @solutions.each do |solution| %>
+      <tr>
+        <td><center><%= solution.user.email.split("@").first.upcase %></center></td>
+        <td><center><a href=<%= solution.url %> alt=<%= @task.name %>>Link do rozwiązania </a></center></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+
+  <%= link_to "Wróć do zadania", subject_category_list_task_path(@subject, @category, @list, @task), class: "button secondary" %>
+
+</center>
+
+<% content_for :sidebar do %>
+  <center><h5><strong> <%= @task.list.category.name %>: <%= @task.list.name %> </strong></h5></center><br>
+  <ul class="nav nav-tabs nav-stacked">
+    <% if user_signed_in? %>
+      <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
+        <% if  current_user.task_done?(task) %>
+          <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
+          <li>
+            <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
+        <% elsif current_user.task_too_hard?(task) %>
+          <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
+          <li>
+            <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #85A7FA' %></li>
+        <% elsif  task.level != nil && task.level > 1 %>
+          <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
+          <li>
+            <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %>
+          </li>
+        <% else %>
+          <!-- ZADANIE PROSTE NIE ZROBIONE -->
+          <li><%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task) %></li>
+        <% end %>
+      <% end %>
+    <% else %>
+      <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
+        <% if  task.level > 1 %>
+          <!-- ZADANIE TRUDNE NA CZERWONO-->
+          <li>
+            <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %></li>
+        <% else %>
+          <!-- ZADANIE PROSTE -->
+          <li><%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task) %></li>
+        <% end %>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

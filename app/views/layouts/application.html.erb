@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pass Exam: Maematyka Dyskretna</title>
+  <title>Pass Exam: <%= @subject.name %></title>
   <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
   <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
   <%= csrf_meta_tags %>
@@ -19,50 +19,17 @@
       <div class="nav-collapse" style="margin-top: 10px">
         <ul class="nav">
           <li class="active"><%= link_to "Home", root_url %></li>
-          <% @categories.each do |category| %>
+          <% @subject.categories.each do |category| %>
             <li class="dropdown" id="accountmenu">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#"><%= category.name %><b class="caret"></b></a>
               <%if category.lists.size > 0 %>
                 <ul class="dropdown-menu">
                 <% category.lists.sort_by{|obj| obj.name.to_i}.each do |list| %>
-                  <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#"><%= list.name %></a>
-                      <%if list.tasks.size > 0 %>
-                        <ul class="dropdown-menu dropup-menu posfix">
-                         <% if user_signed_in? %>
-                                <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-                                      <% if  current_user.task_done?(task) %> 
-                                      <!-- ZADANIE ZROBIONE PRZEZ CIEBIE NA ZIELONO -->
-                                        <li style="background-color: #A5D28C">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% elsif current_user.task_too_hard?(task) %>
-                                      <!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
-                                        <li style="background-color: #85A7FA">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% elsif  task.level != nil && task.level > 1 %>
-                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-                                        <li style="background-color: #F9C8C8">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% else %>
-                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% end %>
-                                  <% end %>
-                          <% else %>
-                                  <% list.tasks.sort_by{|obj| obj.name.to_i}.each do |task| %>
-                                      <% if  task.level != nil && task.level > 1 %>
-                                      <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-                                        <li style="background-color: #F9C8C8">
-                                        <%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% else %>
-                                      <!-- ZADANIE PROSTE NIE ZROBIONE -->
-                                        <li><%= link_to task.name, category_list_task_path(category, list, task) %></li>
-                                      <% end %>
-                                <% end %>
-                         <% end %>
-                        </ul>
-                      <% end %>
-                  </li>
+                    <%if list.tasks.first.present? %>
+                      <li><%= link_to list.name, subject_category_list_task_path(@subject, category, list, list.tasks.first) %></li>
+                    <% else %>
+                      <li> <a><%= list.name %> (brak zadań) </a></li>
+                    <% end %>
                 <% end %>
                 </ul>
               <% end %>
@@ -73,14 +40,14 @@
         <form class="navbar-form pull-right">
             <% if user_signed_in? %>
                     <strong><%= current_user.email.split("@").first.upcase %></strong> 
-                    jesteś przygotowany w <strong><%= current_user.task_counter %> % </strong>&nbsp;&nbsp;&nbsp;
-                    <a href=<%= user_progresses_path %> class="button tiny secondary"> <span class="icon trophy"></span>Statystyki</a>
-                    <%= link_to "Panel Admina", user_categories_path, :class => 'button tiny' %> 
+                    jesteś <%= current_user.ready_form %>  w <strong><%= current_user.task_counter(@subject) %> % </strong>&nbsp;&nbsp;&nbsp;
+                    <a href=<%= user_subject_progresses_path(@subject) %> class="button tiny secondary"> <span class="icon trophy"></span>Statystyki</a>
+                    <%= link_to "Panel Admina", user_subject_categories_path(@subject), :class => 'button tiny' %>
                     <%= link_to 'Edytuj konto', edit_user_registration_path, :class => 'button tiny' %> 
                     <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Wyloguj</a>
                 <% else %>
-                    <a href="<%= new_user_session_path %>" class="button secondary"  ><span class='icon user'></span>Zaloguj</a>
-                    <a href="<%= new_user_registration_path %>" class="button" ><span class="icon pencil"></span>Zarejestruj</a>
+                    <a href="<%= new_user_session_path() %>" class="button secondary"  ><span class='icon user'></span>Zaloguj</a>
+                    <!--<a href="<%= new_user_registration_path() %>" class="button" ><span class="icon pencil"></span>Zarejestruj</a>-->
                 <% end %>
         </form>
         </ul>
@@ -89,7 +56,7 @@
   </div>
   </div>
   <div class="container" style="margin-top: 70px">
-      <% if @current_controller == 'tasks' and @current_action =='show' %>
+      <% if (@current_controller == 'tasks' and @current_action =='show') or (@current_controller == 'solutions' and @current_action =='index') %>
         <div class="row" style="margin-left: -30px">
           <div class="span2">
             <%= yield(:sidebar) %>
@@ -107,17 +74,12 @@
     <% end %>
       <hr>
       <footer>
-        <center><h3>Do egzaminu pozostało: <%= distance_of_time_in_words(Time.now, DateTime.civil_from_format(:local, 2014, 2, 24, 10), :locale => 'pl') %></h3></center>
+        <% if @subject.exam_date.present? %>
+          <center><h3>Do egzaminu pozostało: <%= distance_of_time_in_words(Time.now, @subject.exam_date, :locale => 'pl') %></h3></center>
+        <% end %>
       </footer>
   </div>
 </div>
 
 </body>
-
-
-      <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-   <!-- <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
-     <script src="/assets/bootstrap.min.js"></script> -->
-  </html>
+</html>

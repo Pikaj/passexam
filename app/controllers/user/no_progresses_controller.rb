@@ -1,31 +1,11 @@
 class User::NoProgressesController < UserController
 
   def index
-    @noprogresses = NoProgress.all
+    @subject = Subject.find(params[:subject_id])
+    @noprogresses = @subject.no_progresses
     respond_to  do |format|
       format.html 
       format.json {render :json => @noprogresses.to_json} 
     end
   end
-
-  def new
-    @noprogress = NoProgress.new
-  end
-  
-  def create
-    @noprogress = NoProgress.new(list_params)
-  end
-
-  def destroy
-    @noprogres.destroy
-  end
-
-  private
-    def set_noprogress
-      @noprogress = NoProgress.find(params[:id])
-    end
-
-    def noprogress_params
-      params.require(:noprogress).permit()
-    end
 end

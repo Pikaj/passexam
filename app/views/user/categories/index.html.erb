@@ -11,12 +11,17 @@
   </thead>
 
   <tbody>
+  <% if @categories.empty? %>
+    <tr>
+      <td><center> Brak kategorii </center></td>
+    </tr>
+  <% end %>
     <% @categories.each do |category| %>
       <tr>
         <td><center><%= category.name %></center></td>
-        <td><%= link_to 'Pokaż', user_category_path(category) %></td>
-        <td><%= link_to 'Edytuj', edit_user_category_path(category) %></td>
-        <td><%= link_to 'Usuń', [:user,category], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+        <td><%= link_to 'Pokaż', user_subject_category_path(@subject, category) %></td>
+        <td><%= link_to 'Edytuj', edit_user_subject_category_path(@subject, category) %></td>
+        <td><%= link_to 'Usuń', [:user, @subject, category], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
       </tr>
     <% end %>
   </tbody>
