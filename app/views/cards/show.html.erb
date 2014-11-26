@@ -68,8 +68,13 @@
 <div class="modal fade" id="answerCard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+            Odpowiedź na pytanie nr <%= @card.number %> z działu: <%= @card.card_category.name %>
+        </div>
+      </div>
       <div class="modal-body">
-        <img src=<%= @card.answer %>><br>
+        <center><img src=<%= @card.answer %>></center>
       </div>
       <div class="modal-footer">
         <% if user_signed_in? %>
