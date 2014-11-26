@@ -6,6 +6,7 @@
       <th>Lista</th>
       <th>Zadanie</th>
       <th>Zgłoszone przez</th>
+      <th>Rozwiązania</th>
     </tr>
   </thead>
 
@@ -21,11 +22,16 @@
         <td><center><%= noprogress.task.list.name %></center></td>
         <td><center><strong><%= link_to noprogress.task.name, subject_category_list_task_path(@subject, noprogress.task.list.category, noprogress.task.list, noprogress.task) %></strong></center></td>
         <td><center><%= noprogress.user.email.split("@").first.upcase %></center></td>
+        <% if noprogress.task.solutions.empty? %>
+           <td><center>brak rozwiązań</center></td>
+        <% else %>
+           <td><center><strong><%= link_to "Zobacz rozwiązania", subject_category_list_task_solutions_path(@subject, noprogress.task.list.category, noprogress.task.list, noprogress.task) %></strong></center></td>
+        <% end %>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <center>
-  <a href=<%= root_url %> class="button secondary"></span>Wróć</a>
+  <a href=<%= subject_path(@subject) %> class="button secondary"></span>Wróć</a>
 </center>

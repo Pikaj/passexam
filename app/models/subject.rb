@@ -2,6 +2,7 @@ class Subject < ActiveRecord::Base
   has_many :categories
   has_many :progresses
   has_many :no_progresses
+  has_many :card_categories
 
   def exam_date
     now = Time.now

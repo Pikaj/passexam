@@ -3,11 +3,22 @@ Dyskretna::Application.routes.draw do
   devise_for :users, :controllers => {:sessions => "sessions", :registrations => "registrations"}
   get 'spa' => 'spa#index'
   resources :subjects do
+    resources :card_categories do
+      collection do
+        get 'all_cards'
+      end
+      resources :cards do
+        member do
+          get 'correct_answer'
+          get 'wrong_answer'
+        end
+      end
+    end
     resources :categories do
       resources :lists do
         resources :tasks do
           resources :solutions
-          member do
+            member do
               get 'im_done'
               get 'im_sure_done'
               get 'im_done_cancel'
@@ -23,6 +34,9 @@ Dyskretna::Application.routes.draw do
     resources :subjects do
       resources :no_progresses
       resources :progresses
+      resources :card_categories do
+        resources :cards
+      end
       resources :categories do
         resources :lists do
           resources :tasks do

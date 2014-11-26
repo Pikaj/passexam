@@ -1,47 +1,44 @@
-class User::CategoriesController < UserController
+class User::CardCategoriesController < UserController
   def new
-    @category = Category.new
+    @card_category = CardCategory.new
   end
 
   def index
     @subject = Subject.find(params[:subject_id])
-    @categories = @subject.categories
-    @category = Category.new
     @card_categories = @subject.card_categories
-    @card_category = CardCategory.new
   end
 
   def show
     @subject = Subject.find(params[:subject_id])
-    @category = @subject.categories.find(params[:id])
-    @list = List.new
+    @card_category = @subject.card_categories.find(params[:id])
+    @card = Card.new
   end
 
   def create
     @subject = Subject.find(params[:subject_id])
-    @category = Category.new(category_params)
-    @category.subject = @subject
-    @category.save
+    @card_category = CardCategory.new(category_params)
+    @card_category.subject = @subject
+    @card_category.save
     redirect_to user_subject_categories_path(@subject)
   end
 
   def edit
     @subject = Subject.find(params[:subject_id])
-    @category = @subject.categories.find(params[:id])
+    @card_category = @subject.card_categories.find(params[:id])
   end
 
   def destroy
     @subject = Subject.find(params[:subject_id])
-    @category = @subject.categories.find(params[:id])
-    @category.destroy
+    @card_category = @subject.card_categories.find(params[:id])
+    @card_category.destroy
     redirect_to user_subject_categories_path(@subject)
   end
 
   def update
     @subject = Subject.find(params[:subject_id])
-    @category = @subject.categories.find(params[:id])
+    @card_category = @subject.card_categories.find(params[:id])
 
-    if @category.update(params[:category].permit(:name))
+    if @card_category.update(params[:card_category].permit(:name))
       redirect_to user_subject_categories_path(@subject)
     else
       render 'edit'
@@ -49,8 +46,8 @@ class User::CategoriesController < UserController
   end
 
   private
-    
+
   def category_params
-    params.require(:category).permit(:name)
+    params.require(:card_category).permit(:name)
   end
 end

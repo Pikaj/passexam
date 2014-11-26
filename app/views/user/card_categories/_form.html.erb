@@ -1,0 +1,12 @@
+<%= form_for [:user, @subject, @card_category] do |f| %>
+    
+    <table>
+      <tbody>
+        <tr>
+          <td><strong> Nazwa: </strong></td>
+          <td><%= f.text_field :name %></td>
+          <td><%= f.submit "Zatwierdź"%></td>
+        </tr>
+      </tbody>
+    </table>
+<% end %>

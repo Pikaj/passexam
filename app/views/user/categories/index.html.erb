@@ -30,4 +30,38 @@
 <br>
 
 <h3> Dodaj nową kategorię</h3>
-<%= render 'form' %> 
+<%= render 'form' %>
+<hr>
+<h1>Lista działów</h1>
+
+<table>
+  <thead>
+  <tr>
+    <th>Nazwa</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% if @card_categories.empty? %>
+      <tr>
+        <td><center> Brak działów </center></td>
+      </tr>
+  <% end %>
+  <% @card_categories.each do |category| %>
+      <tr>
+        <td><center><%= category.name %></center></td>
+        <td><%= link_to 'Pokaż', user_subject_card_category_path(@subject, category) %></td>
+        <td><%= link_to 'Edytuj', edit_user_subject_card_category_path(@subject, category) %></td>
+        <td><%= link_to 'Usuń', [:user, @subject, category], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<h3> Dodaj nowy dział</h3>
+<%= render 'user/card_categories/form' %>

@@ -1,0 +1,88 @@
+<center>
+  <h3>Pytanie nr <%= @card.number %> z działu: <%= @card.card_category.name %></h3>
+
+  <p>
+    <% if user_signed_in? %>
+        <strong>Poziom:</strong>
+        <% if current_user.card_done?(@card)%>
+            <font color="green"> <%= current_user.card_level(@card).round(2) %> %</font>
+        <% else %>
+            <font color="red"> <%= current_user.card_level(@card).round(2) %> %</font>
+        <% end %>
+    <% end %>
+    <br>
+  </p>
+
+  <br>
+  <img src=<%= @card.question %>><br>
+  <br>
+  <% if @card_previous.present? %>
+      <%= link_to subject_card_category_card_path(@subject, @card_category, @card_previous), class: "button primary small" do %>
+          <span class="icon arrow-left" style="margin-right: 0px"></span>
+      <% end %>
+  <% end %>
+  <a href='#' data-toggle="modal" data-target="#answerCard" class="button secondary small">Odpowiedź</a>
+  <% if @card_next.present? %>
+      <%= link_to subject_card_category_card_path(@subject, @card_category, @card_next), class: "button primary small" do %>
+          <span class="icon arrow-right" style="margin-right: 0px"></span>
+      <% end %>
+  <% end %>
+</center>
+
+
+<% content_for :sidebar do %>
+    <center><h5><strong> Działy: </strong></h5></center><br>
+    <% if @card_categories.present? %>
+        <ul class="nav nav-tabs nav-stacked">
+          <% if user_signed_in? %>
+              <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
+                  <% if category.cards.present? %>
+                      <% if  current_user.category_done?(category) %>
+                          <!-- Kategoria ukończona PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
+                          <li>
+                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #A5D28C' %></li>
+                      <% else %>
+                          <!-- Kategoria nie ukończona PRZEZ CIEBIE NA BIAŁO -->
+                          <li>
+                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                      <% end %>
+                  <% else %>
+                      <li><a><%= category.name %></a></li>
+                  <% end %>
+              <% end %>
+          <% else %>
+              <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
+                  <% if category.cards.present? %>
+                      <li>
+                        <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                  <% end %>
+              <% end %>
+          <% end %>
+        </ul>
+    <% else %>
+        brak działów
+    <% end %>
+<% end %>
+
+<!-- Modal -->
+<div class="modal fade" id="answerCard" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body">
+        <img src=<%= @card.answer %>><br>
+      </div>
+      <div class="modal-footer">
+        <% if user_signed_in? %>
+            <%= link_to wrong_answer_subject_card_category_card_path(@subject, @card_category, @card), style: "font-size: 30px; margin-right: 10px;" do %>
+                <span class="icon thumbs-down"></span>
+            <% end %>
+            <%= link_to correct_answer_subject_card_category_card_path(@subject, @card_category, @card), style: "font-size: 30px;" do %>
+                <span class="icon thumbs-up"></span>
+            <% end %>
+        <% else %>
+            <a href='#' class="button success small" ><span class="icon arrow-right"></span>Nastepne pytanie</a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

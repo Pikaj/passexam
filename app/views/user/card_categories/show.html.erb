@@ -1,0 +1,40 @@
+
+<h2><%= @card_category.name %></h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>Numer</th>
+    <th>Pytanie</th>
+    <th>Odpowiedź</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% if @card_category.cards.empty? %>
+      <tr>
+        <td><center> Brak pytań</center></td>
+      </tr>
+  <% end %>
+  <% @card_category.cards.each do |card| %>
+      <tr>
+        <td><center><%= card.number %></center></td>
+        <td><center><a href=<%= card.question %>>Link do pytania nr <%= card.number %></a></center></td>
+        <td><center><a href=<%= card.answer %>>Link do odpowiedzi nr <%= card.number %></a></center></td>
+        <td><%= link_to 'Pokaż', subject_card_category_card_path(@subject, @card_category, card) %></td>
+        <td><%= link_to 'Edytuj', edit_user_subject_card_category_card_path(@subject, @card_category, card) %></td>
+        <td><%= link_to 'Usuń', [:user, @subject, @card_category, card], method: :delete, data: { confirm: 'Jesteś pewny?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<h3> Dodaj nowe pytanie</h3>
+<%= render '/user/cards/form' %>
+
+<center>
+  <a href=<%= user_subject_card_category_path(@subject, @card_category) %> class="button secondary"></span>Wróć</a>
+</center>

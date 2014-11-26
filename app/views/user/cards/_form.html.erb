@@ -1,0 +1,23 @@
+<%= form_for [:user, @subject, @card_category, @card] do |f| %>
+
+    <table>
+      <tbody>
+      <tr>
+        <td><center><strong> Numer: </strong></center></td>
+        <td><%= f.text_field :number %></td>
+      </tr>
+      <tr>
+        <td><center><strong> Pytanie (url): </strong></center></td>
+        <td><%= f.text_field :question %></td>
+      </tr>
+      <tr>
+        <td><center><strong> Odpowiedź (url): </strong></center></td>
+        <td><%= f.text_field :answer %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><center><%= f.submit "Zatwierdź"%></center></td>
+      </tr>
+      </tbody>
+    </table>
+<% end %>

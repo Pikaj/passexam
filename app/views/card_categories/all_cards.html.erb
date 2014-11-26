@@ -1,0 +1,102 @@
+<center><strong><h3>Ranking Fiszki</h3></strong></center>
+
+<table>
+  <thead>
+  <tr>
+    <th>Miejsce</th>
+    <th>Osoba</th>
+    <th>Przygotowanie</th>
+    <th>Zapamiętane pytania</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @rating_cards.each_with_index do |user, index| %>
+      <tr>
+        <td><center><%= index+1 %></center></td>
+        <td><center><%= user.email.split("@").first.upcase %></center></td>
+        <td><center><%= user.point_counter(@subject) %> %</center></td>
+        <td><center><%= user.points_cards(@subject) %> / <%= @cards.size %></center></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<center><strong><h3>Postęp w nauce</h3></strong></center>
+
+<table>
+  <tbody>
+  <tr>
+    <td style='background-color: #A5D28C;'>
+      <center>Zapamietane</center></td>
+    <td style='background-color: #ebeb42;'>
+      <center>W trakcie nauki</center></td>
+    <td style='background-color: #FFFFFF;'>
+      <center>Niezapamietane</center></td>
+  </tr>
+  </tbody>
+</table>
+
+<% @subject.card_categories.each do |category| %>
+    <table>
+      <tbody>
+          <tr>
+            <td style="background-color: #c4d2df; border-style:solid;border-width:1px;">
+              <center><strong>
+                <%= category.name %>
+              </strong></center>
+            </td>
+            <% if  category.cards.size > 0 %>
+                <% if current_user.points_card_category(category) == 1.0 %>
+                    <!-- Zapamietane -->
+                    <td style='background-color: #A5D28C; width: <%= 355 + 60 %>px !important; border-style:solid;border-width:1px;'>
+                <% elsif current_user.points_card_category(category) > 0.0 %>
+                    <!-- Postęp -->
+                    <td style='background-color: #ebeb42; width: <%= 355*(current_user.category_percent(category)/100.0) + 60 %>px !important; border-style:solid;border-width:1px;'>
+                <% else %>
+                    <!-- Niezapamiętane -->
+                    <td style='background-color: #FFF; width: 60px; border-style:solid;border-width:1px;'>
+                <% end %>
+                <strong><%= current_user.category_percent(category) %> %</strong>
+                </td>
+            <% else %>
+                <td style="width: 250px;"><center>brak pytań</center></td>
+            <% end %>
+          </tr>
+      </tbody>
+    </table>
+<% end %>
+
+<% content_for :sidebar do %>
+    <center><h5><strong> Działy: </strong></h5></center><br>
+    <% if @card_categories.present? %>
+        <ul class="nav nav-tabs nav-stacked">
+          <% if user_signed_in? %>
+              <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
+                  <% if category.cards.present? %>
+                      <% if  current_user.category_done?(category) %>
+                          <!-- Kategoria ukończona PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
+                          <li>
+                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #A5D28C' %></li>
+                      <% else %>
+                          <!-- Kategoria nie ukończona PRZEZ CIEBIE NA BIAŁO -->
+                          <li>
+                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                      <% end %>
+                  <% else %>
+                    <li><a><%= category.name %></a></li>
+                  <% end %>
+              <% end %>
+          <% else %>
+              <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
+                  <% if category.cards.present? %>
+                      <li>
+                        <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                  <% end %>
+              <% end %>
+          <% end %>
+        </ul>
+    <% else %>
+        brak działów
+    <% end %>
+<% end %>

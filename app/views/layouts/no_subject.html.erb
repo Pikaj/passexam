@@ -24,7 +24,9 @@
           <form class="navbar-form pull-right">
             <% if user_signed_in? %>
               <%= link_to "Zarządzaj przedmiotami", user_subjects_path, :class => 'button tiny' %>
-              <%= link_to 'Edytuj konto', edit_user_registration_path, :class => 'button tiny' %>
+              <%= link_to edit_user_registration_path, :class => 'button tiny' do %>
+                <span class='icon user' style="margin-right: 0px;"></span>
+              <% end %>
               <a href="<%= destroy_user_session_path %>" data-method="delete" rel="nofollow" class="button tiny secondary alert" class = 'button small alert' > <span class="icon off"></span>Wyloguj</a>
             <% else %>
               <a href="<%= new_user_session_path() %>" class="button secondary"  ><span class='icon user'></span>Zaloguj</a>

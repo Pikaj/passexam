@@ -11,7 +11,27 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141109105040) do
+ActiveRecord::Schema.define(version: 20141126153755) do
+
+  create_table "card_categories", force: true do |t|
+    t.string   "name"
+    t.integer  "subject_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "card_categories", ["subject_id"], name: "index_card_categories_on_subject_id"
+
+  create_table "cards", force: true do |t|
+    t.string   "question"
+    t.string   "answer"
+    t.integer  "card_category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "number"
+  end
+
+  add_index "cards", ["card_category_id"], name: "index_cards_on_card_category_id"
 
   create_table "categories", force: true do |t|
     t.string   "name"
@@ -42,6 +62,18 @@ ActiveRecord::Schema.define(version: 20141109105040) do
   add_index "no_progresses", ["subject_id"], name: "index_no_progresses_on_subject_id"
   add_index "no_progresses", ["task_id"], name: "index_no_progresses_on_task_id"
   add_index "no_progresses", ["user_id"], name: "index_no_progresses_on_user_id"
+
+  create_table "points", force: true do |t|
+    t.float    "percent"
+    t.integer  "user_id"
+    t.integer  "card_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.float    "level",      default: 0.15
+  end
+
+  add_index "points", ["card_id"], name: "index_points_on_card_id"
+  add_index "points", ["user_id"], name: "index_points_on_user_id"
 
   create_table "progresses", force: true do |t|
     t.integer  "task_id"
