@@ -8,6 +8,10 @@ Dyskretna::Application.routes.draw do
         get 'all_cards'
       end
       resources :cards do
+        collection do
+          get 'start'
+          get 'end'
+        end
         member do
           get 'correct_answer'
           get 'wrong_answer'

@@ -77,11 +77,11 @@
                       <% if  current_user.category_done?(category) %>
                           <!-- Kategoria ukończona PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
                           <li>
-                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #A5D28C' %></li>
+                            <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #A5D28C' %></li>
                       <% else %>
                           <!-- Kategoria nie ukończona PRZEZ CIEBIE NA BIAŁO -->
                           <li>
-                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                            <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #FFF' %></li>
                       <% end %>
                   <% else %>
                     <li><a><%= category.name %></a></li>
@@ -91,7 +91,7 @@
               <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
                   <% if category.cards.present? %>
                       <li>
-                        <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                        <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #FFF' %></li>
                   <% end %>
               <% end %>
           <% end %>

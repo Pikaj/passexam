@@ -16,14 +16,14 @@
   <br>
   <img src=<%= @card.question %>><br>
   <br>
-  <% if @card_previous.present? %>
-      <%= link_to subject_card_category_card_path(@subject, @card_category, @card_previous), class: "button primary small" do %>
+  <% if @card_previous %>
+      <%= link_to subject_card_category_card_path(@subject, @card_category, @current_card_id-1), class: "button primary small" do %>
           <span class="icon arrow-left" style="margin-right: 0px"></span>
       <% end %>
   <% end %>
   <a href='#' data-toggle="modal" data-target="#answerCard" class="button secondary small">Odpowiedź</a>
-  <% if @card_next.present? %>
-      <%= link_to subject_card_category_card_path(@subject, @card_category, @card_next), class: "button primary small" do %>
+  <% if @card_next %>
+      <%= link_to subject_card_category_card_path(@subject, @card_category, @current_card_id+1), class: "button primary small" do %>
           <span class="icon arrow-right" style="margin-right: 0px"></span>
       <% end %>
   <% end %>
@@ -40,11 +40,11 @@
                       <% if  current_user.category_done?(category) %>
                           <!-- Kategoria ukończona PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
                           <li>
-                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #A5D28C' %></li>
+                            <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #A5D28C' %></li>
                       <% else %>
                           <!-- Kategoria nie ukończona PRZEZ CIEBIE NA BIAŁO -->
                           <li>
-                            <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                            <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #FFF' %></li>
                       <% end %>
                   <% else %>
                       <li><a><%= category.name %></a></li>
@@ -54,7 +54,7 @@
               <% for category in @card_categories.sort_by{|obj| obj.created_at} %>
                   <% if category.cards.present? %>
                       <li>
-                        <%= link_to category.name, subject_card_category_card_path(@subject , category, category.cards.sort_by{|obj| obj.number}.first), :style => 'background-color: #FFF' %></li>
+                        <%= link_to category.name, start_subject_card_category_cards_path(@subject, category), :style => 'background-color: #FFF' %></li>
                   <% end %>
               <% end %>
           <% end %>
@@ -78,10 +78,10 @@
       </div>
       <div class="modal-footer">
         <% if user_signed_in? %>
-            <%= link_to wrong_answer_subject_card_category_card_path(@subject, @card_category, @card), style: "font-size: 30px; margin-right: 10px;" do %>
+            <%= link_to wrong_answer_subject_card_category_card_path(@subject, @card_category, @current_card_id), style: "font-size: 30px; margin-right: 10px;" do %>
                 <span class="icon thumbs-down"></span>
             <% end %>
-            <%= link_to correct_answer_subject_card_category_card_path(@subject, @card_category, @card), style: "font-size: 30px;" do %>
+            <%= link_to correct_answer_subject_card_category_card_path(@subject, @card_category, @current_card_id), style: "font-size: 30px;" do %>
                 <span class="icon thumbs-up"></span>
             <% end %>
         <% else %>
