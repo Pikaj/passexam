@@ -33,14 +33,7 @@ class CardsController  < ApplicationController
     @card = @card_category.cards.find(params[:id])
     @next_cards = @card_category.cards.where(number: (@card.number + 1))
     points = current_user.points.where(card_id: params[:id])
-    if points.empty?
-      point = Point.create(
-          user_id: current_user,
-          card_id: params[:id],
-          percent: 0.1
-      )
-      current_user.points << point
-    else
+    if points.present?
       point = points.first
       point.percent = point.percent - point.percent/2.0
       point.level = 0.1
