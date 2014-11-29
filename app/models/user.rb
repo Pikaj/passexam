@@ -63,7 +63,7 @@ class User < ActiveRecord::Base
 
   def point_counter(subject)
     points = 0.0
-    categories_size = subject.card_categories.size
+    categories_size = subject.card_categories.select{|c| c.cards.size > 0}.size
     for category in subject.card_categories
       if category.cards.size > 0
         points = points + (points_card_category(category) / category.cards.size.to_f)
