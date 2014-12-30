@@ -49,13 +49,13 @@
             <% if  category.cards.size > 0 %>
                 <% if current_user.points_card_category(category) == 1.0 %>
                     <!-- Zapamietane -->
-                    <td style='background-color: #A5D28C; width: <%= 355 + 70 %>px !important; border-style:solid;border-width:1px;'>
+                    <td style='background-color: #A5D28C; width: <%= 355 + 80 %>px !important; border-style:solid;border-width:1px;'>
                 <% elsif current_user.points_card_category(category) > 0.0 %>
                     <!-- Postęp -->
-                    <td style='background-color: #ebeb42; width: <%= 355*(current_user.category_percent(category)/100.0) + 70 %>px !important; border-style:solid;border-width:1px;'>
+                    <td style='background-color: #ebeb42; width: <%= 355*(current_user.category_percent(category)/100.0) + 80 %>px !important; border-style:solid;border-width:1px;'>
                 <% else %>
                     <!-- Niezapamiętane -->
-                    <td style='background-color: #FFF; width: 60px; border-style:solid;border-width:1px;'>
+                    <td style='background-color: #FFF; width: 80px; border-style:solid;border-width:1px;'>
                 <% end %>
                 <strong><%= current_user.category_percent(category) %> %</strong>
                 </td>
