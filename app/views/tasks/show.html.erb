@@ -81,7 +81,7 @@
   <center><h5><strong> <%= @task.list.category.name %>: <%= @task.list.name %> </strong></h5></center><br>
   <ul class="nav nav-tabs nav-stacked">
     <% if user_signed_in? %>
-        <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_i} %>
+        <% for task in @task.list.tasks.sort_by{|obj| obj.name.to_s} %>
           <% if  current_user.task_done?(task) %>
             <% if current_user.is_verified_solution?(task) %>
                 <!-- ZADANIE ZROBIONE PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
