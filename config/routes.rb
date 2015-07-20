@@ -1,6 +1,9 @@
 Dyskretna::Application.routes.draw do
 
   devise_for :users, :controllers => {:sessions => "sessions", :registrations => "registrations"}
+
+  mount API::Base => '/api'
+
   get 'spa' => 'spa#index'
   resources :subjects do
     resources :card_categories do

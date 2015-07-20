@@ -1,5 +1,7 @@
 class CardCategoriesController  < ApplicationController
 
+  scope :visible, -> { where(is_visible: true) }
+
   def all_cards
     @subject = Subject.find(params[:subject_id])
     @card_categories = @subject.card_categories

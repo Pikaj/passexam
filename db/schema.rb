@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141126153755) do
+ActiveRecord::Schema.define(version: 20150719123218) do
 
   create_table "card_categories", force: true do |t|
     t.string   "name"
     t.integer  "subject_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_visible", default: true
   end
 
   add_index "card_categories", ["subject_id"], name: "index_card_categories_on_subject_id"
@@ -29,6 +30,7 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "number"
+    t.boolean  "is_visible",       default: true
   end
 
   add_index "cards", ["card_category_id"], name: "index_cards_on_card_category_id"
@@ -38,18 +40,46 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "subject_id"
+    t.boolean  "is_visible", default: true
   end
 
   add_index "categories", ["subject_id"], name: "index_categories_on_subject_id"
+
+  create_table "comments", force: true do |t|
+    t.integer  "task_id"
+    t.integer  "user_id"
+    t.integer  "solution_id"
+    t.boolean  "is_to_task"
+    t.string   "content"
+    t.integer  "stars"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "comments", ["solution_id"], name: "index_comments_on_solution_id"
+  add_index "comments", ["task_id"], name: "index_comments_on_task_id"
+  add_index "comments", ["user_id"], name: "index_comments_on_user_id"
 
   create_table "lists", force: true do |t|
     t.string   "name"
     t.integer  "category_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_visible",  default: true
   end
 
   add_index "lists", ["category_id"], name: "index_lists_on_category_id"
+
+  create_table "logs", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "model_id"
+    t.string   "model_class"
+    t.string   "action_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "logs", ["user_id"], name: "index_logs_on_user_id"
 
   create_table "no_progresses", force: true do |t|
     t.integer  "task_id"
@@ -94,6 +124,7 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.integer  "task_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_visible", default: true
   end
 
   add_index "solutions", ["task_id"], name: "index_solutions_on_task_id"
@@ -105,6 +136,7 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.datetime "updated_at"
     t.datetime "first_exam"
     t.datetime "second_exam"
+    t.boolean  "is_visible",  default: true
   end
 
   create_table "tasks", force: true do |t|
@@ -115,9 +147,23 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.integer  "list_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "is_visible", default: true
   end
 
   add_index "tasks", ["list_id"], name: "index_tasks_on_list_id"
+
+  create_table "tickets", force: true do |t|
+    t.integer  "user_id"
+    t.integer  "subject_id"
+    t.boolean  "accepted"
+    t.boolean  "is_access"
+    t.boolean  "is_manage"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tickets", ["subject_id"], name: "index_tickets_on_subject_id"
+  add_index "tickets", ["user_id"], name: "index_tickets_on_user_id"
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -132,6 +178,9 @@ ActiveRecord::Schema.define(version: 20141126153755) do
     t.string   "last_sign_in_ip"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "username"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

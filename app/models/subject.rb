@@ -3,6 +3,10 @@ class Subject < ActiveRecord::Base
   has_many :progresses
   has_many :no_progresses
   has_many :card_categories
+  has_many :tickets
+
+  scope :visible, -> { where(is_visible: true) }
+
 
   def exam_date
     now = Time.now
@@ -27,5 +31,21 @@ class Subject < ActiveRecord::Base
 
   def tasks_size
     self.categories.map(&:lists).flatten.map(&:tasks).flatten.size
+  end
+
+  def cards_size
+    self.card_categories.map(&:cards).flatten.size
+  end
+
+  def solutions_size
+    self.categories.map(&:lists).flatten.map(&:tasks).flatten.map(&:solutions).flatten.size
+  end
+
+  def has_ticket_user(user)
+    self.tickets.select{|t| t.user==user}.size > 0
+  end
+
+  def has_ticket_accepted?(user)
+    self.tickets.select{|t| t.user==user}.first.accepted
   end
 end

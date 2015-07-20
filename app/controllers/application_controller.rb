@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   # before_filter :redirect_signed_user
-  before_filter :set_noprogresses
+  before_filter :set_home_values
   # layout :determine_layout
 
   before_filter :instantiate_controller_and_action_names
@@ -29,9 +29,12 @@ class ApplicationController < ActionController::Base
     return path
   end
 
-
-  def set_noprogresses
+  def set_home_values
     @noprogresses = NoProgress.all
+    @users_size = User.all.size
+    @tasks_size = Task.all.size
+    @cards_size = Card.all.size
+    @solutions_size = Solution.all.size
   end
 
   # def redirect_signed_user

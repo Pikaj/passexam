@@ -3,8 +3,11 @@ class Task < ActiveRecord::Base
 	has_many :progresses
 	has_many :no_progresses
   has_many :solutions
+  has_many :comments
 
-	def too_hard?
+  scope :visible, -> { where(is_visible: true) }
+
+  def too_hard?
     !self.no_progresses.empty?
   end
 end

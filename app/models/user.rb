@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include RoleModel
+  roles_attribute :roles_mask
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -8,9 +10,14 @@ class User < ActiveRecord::Base
   has_many :no_progresses
   has_many :solutions
   has_many :points
+  has_many :comments
+  has_many :tickets
+  has_many :logs
 
   has_many :tasks, :through => :progresses
   has_many :tasks, :through => :noprogresses
+
+  roles :admin, :manager, :student
 
   def task_done?(task)
   	!self.progresses.where(:task_id => task.id).empty?
