@@ -9,34 +9,5 @@ class API::V1::Tasks::Entities::ShowEntity< API::V1::BaseEntity
 end
 
 def status
-  if current_user.task_done?(object)
-    if current_user.is_verified_solution?(task)
-      'done_verified'
-    else
-      ''
-    end
+  object.get_current_status(current_user)
 end
-
-<% if  current_user.task_done?(task) %>
-<% if current_user.is_verified_solution?(task) %>
-<!-- ZADANIE ZROBIONE PRZEZ CIEBIE SPRAWDZONE NA ZIELONO -->
-                                                         <li>
-                                                         <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #A5D28C' %></li>
-            <% else %>
-                <!-- ZADANIE ZROBIONE PRZEZ CIEBIE  NIESPRAWDZONE NA ZIELONO -->
-                <li>
-                  <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F5B24E' %></li>
-<% end %>
-<% elsif current_user.task_too_hard?(task) %>
-<!-- ZADANIE OZNACZONE PRZEZ CIEBIE JAKO ZA TRUDNE NA NIEBIESKO-->
-                                                      <li>
-                                                      <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #85A7FA' %></li>
-          <% elsif  task.level != nil && task.level > 1 %>
-            <!-- ZADANIE NIE ZROBIONE TRUDNE NA CZERWONO-->
-            <li>
-              <%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task), :style => 'background-color: #F9C8C8' %>
-              </li>
-<% else %>
-            <!-- ZADANIE PROSTE NIE ZROBIONE -->
-<li><%= link_to task.name, subject_category_list_task_path(@subject ,task.list.category, task.list, task) %></li>
-          <% end %>
