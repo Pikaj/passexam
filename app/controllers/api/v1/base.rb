@@ -22,5 +22,10 @@ class API::V1::Base < Grape::API
   error_formatter :json, JSendErrorFormatter
 
   mount API::V1::Subjects::Root
+  mount API::V1::Categories::Root
+  mount API::V1::CardCategories::Root
+  mount API::V1::Tasks::Root
+  mount API::V1::Lists::Root
+  mount API::V1::Cards::Root
   mount API::V1::Welcome::Root
 end

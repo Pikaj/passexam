@@ -9,8 +9,8 @@ class API::V1::Subjects::Entities::ShowDetailsEntity< API::V1::BaseEntity
   expose :cards_size, documentation: { type: 'Integer', desc: "Liczba fiszek" }, format_with: :integer
   expose :solutions_size, documentation: { type: 'Integer', desc: "Liczba rozwiązań" }, format_with: :integer
   expose :students_size, documentation: { type: 'Integer', desc: "Liczba zapisanych studentów" }, format_with: :integer
-  expose :card_categories, using: API::V1::Backend::CardCategories::Entities::ShowEntity, documentation: {type: 'show_card_category', is_array: true }
-  expose :categories, using: API::V1::Backend::Categories::Entities::ShowEntity, documentation: {type: 'show_category', is_array: true }
+  # expose :card_categories, using: API::V1::CardCategories::Entities::ShowEntity, documentation: {type: 'show_card_category', is_array: true }
+  # expose :categories, using: API::V1::Categories::Entities::ShowEntity, documentation: {type: 'show_category', is_array: true }
 end
 
 private
