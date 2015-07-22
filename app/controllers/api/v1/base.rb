@@ -27,5 +27,6 @@ class API::V1::Base < Grape::API
   mount API::V1::Tasks::Root
   mount API::V1::Lists::Root
   mount API::V1::Cards::Root
+  mount API::V1::Users::Root
   mount API::V1::Welcome::Root
 end

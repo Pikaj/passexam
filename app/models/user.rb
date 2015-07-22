@@ -17,7 +17,13 @@ class User < ActiveRecord::Base
   has_many :tasks, :through => :progresses
   has_many :tasks, :through => :noprogresses
 
+  scope :visible, -> { where(is_visible: true) }
+
   roles :admin, :manager, :student
+
+  def full_name
+    self.first_name + ' ' + self.last_name
+  end
 
   def task_done?(task)
   	!self.progresses.where(:task_id => task.id).empty?
