@@ -5,6 +5,7 @@ class API::V1::Categories::Root < Grape::API
   rescue_from :all, backtrace: true
 
   resources :categories do
+    mount API::V1::Categories::Index
   end
 
 end
